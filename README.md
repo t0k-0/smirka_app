@@ -19,5 +19,5 @@ Aplikace je přizpůsobena pro použití na obrazovce mobilního telefonu. Násl
 | Letadlové sloty             | *Umožňují sestavení vzletové konfigurace pomocí přetažení pilotů a letadel na jejich místa.*                                                                                                                                                                                                                                                                           |
 | Spodní panel                | *Ukazuje proměnlivé informace v závislosti na zadávání informací do slotů.*                                                                                                                                                                                                                                                                                            |
 
-### Instalace
+### Instalace na domovskou obrazovku
 Aplikace nyní podporuje instalaci na domovskou obrazovku přes rozhrsaní prohlížeče. Je doporučeno tak učinit, aby bylo rozhraní aplikace nejlépe přizpůsobilo obrazovce telefonu.
