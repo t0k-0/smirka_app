@@ -1,14 +1,6 @@
-/**
- * GliderLog Service Worker
- * Strategy: cache-first for all app assets, network-first for external resources.
- * This enables:
- *   - Full offline use after first load
- *   - Browser "Add to Home Screen" / install prompt on Android/Chrome
- */
-
 'use strict';
 
-const CACHE_NAME = 'gliderlog-v1';
+const CACHE_NAME = 'Šmírka APP-v1';
 
 // All files that make up the app shell — cached on install
 const PRECACHE_FILES = [
