@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!--
+    GliderLog app icon
+    Safe zone for maskable: central 80% (51px margin each side → 51..461)
+    Background fills the full tile so maskable cropping looks correct.
+  -->
+
+  <!-- Full background (fills entire tile for maskable) -->
+  <rect width="512" height="512" fill="#0d0d0d"/>
+
+  <!-- Orange stripe — sits inside the safe zone bottom -->
+  <rect x="0" y="400" width="512" height="112" fill="#e07800"/>
+
+  <!-- "GL" logotype — centred, inside safe zone -->
+  <text
+    x="256" y="358"
+    text-anchor="middle"
+    font-family="&quot;Arial Black&quot;, Arial, sans-serif"
+    font-weight="900"
+    font-size="230"
+    fill="#efefef"
+    letter-spacing="-6">GL</text>
+
+  <!--
+    Subtle glider silhouette above the text — top-down view
+    Keeps the icon recognisable at a glance
+  -->
+  <!-- fuselage -->
+  <ellipse cx="256" cy="152" rx="10" ry="64" fill="#e07800" opacity="0.7"/>
+  <!-- main wings -->
+  <path d="M256,128 C230,130 150,148 90,160 C150,172 230,178 256,178
+           C282,178 362,172 422,160 C362,148 282,130 256,128Z"
+        fill="#efefef" opacity="0.55"/>
+  <!-- tail fin horizontal -->
+  <path d="M256,196 C244,196 218,205 212,212 C226,212 240,209 256,209
+           C272,209 286,212 300,212 C294,205 268,196 256,196Z"
+        fill="#efefef" opacity="0.55"/>
+</svg>
