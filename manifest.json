@@ -1,6 +1,6 @@
 {
-  "name": "GliderLog",
-  "short_name": "GliderLog",
+  "name": "Šmírka APP",
+  "short_name": "Šmírka APP",
   "description": "Airfield glider flight logging",
   "start_url": "./index.html",
   "scope": "./",
