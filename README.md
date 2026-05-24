@@ -1,7 +1,7 @@
 # Šmírka Mobile
 
 ### Popis
-**Šmírka Mobile **je software vytvořen pomocí **Claude AI (Sonnet 4.6)** jako *HTML* soubor. Má za úkol usnadnit zápis startů kluzáků a jejich posádek během letového dne. Disponuje funkcí exportu logu do dokumentu PDF.
+**Šmírka Mobile** je software vytvořen pomocí **Claude AI (Sonnet 4.6)** jako *HTML* soubor. Má za úkol usnadnit zápis startů kluzáků a jejich posádek během letového dne. Disponuje funkcí exportu logu do dokumentu PDF.
 ### Funkce
 Aplikace je přizpůsobena pro použití na obrazovce mobilního telefonu. Následuje seznam funkcí ve smyslu zleva doprava, shora dolů.
 ##### *Seznam funkcí*
