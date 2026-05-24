@@ -22,7 +22,7 @@ Aplikace je přizpůsobena pro použití na obrazovce mobilního telefonu. Násl
 ### Instalace na domovskou obrazovku
 Aplikace nyní podporuje instalaci na domovskou obrazovku přes rozhrsaní prohlížeče. Je doporučeno tak učinit, aby bylo rozhraní aplikace nejlépe přizpůsobilo obrazovce telefonu.
 
-Instalaci provádějte na stránce z [Deployment]
+Instalaci provádějte na stránce z Deployment
 
 ### Deployment
 GitHub Pages: https://t0k-0.github.io/smirka_app/
