@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>GliderLog</title>
+<title>Šmírka APP</title>
 <!-- PWA install support -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0d0d0d">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="GliderLog">
+<meta name="apple-mobile-web-app-title" content="Šmírka APP">
 <link rel="apple-touch-icon" id="pwa-apple-icon">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -1390,7 +1390,7 @@ tbody tr:last-child td{border-bottom:1.5px solid #aaa;}
 .gen{font-size:7px;color:#bbb;margin-top:4px;}
 </style></head><body>
 <div class="hd">
-  <h1>GliderLog &mdash; Flight Record</h1>
+  <h1>Šmírka APP &mdash; Flight Record</h1>
   <div class="dt">Date: <b>${fullDate()}</b></div>
   ${filterNote}
 </div>
@@ -1414,7 +1414,7 @@ tbody tr:last-child td{border-bottom:1.5px solid #aaa;}
   <div>Total take-offs: <strong>${uq}</strong></div>
   <div>Total flight time: <strong>${p2(Math.floor(totM/60))}:${p2(totM%60)}</strong></div>
 </div>
-<div class="gen">Generated ${dateISO} at ${getNow()} &mdash; GliderLog</div>
+<div class="gen">Generated ${dateISO} at ${getNow()} &mdash; Šmírka APP</div>
 </body></html>`;
 
   const w=window.open('','_blank');
