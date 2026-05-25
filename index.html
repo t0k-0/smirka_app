@@ -162,62 +162,24 @@ button{cursor:pointer;border:none;background:none;}
 .plane-card.tow{border-color:var(--tow-brd);}
 .plane-card.glider{border-color:var(--gli-brd);}
 .plane-card.motorized{border-color:var(--mot-brd);}
-/* Airborne plane: greyed but still tappable — takeoff button will block instead */
-.plane-card.plane-airborne{opacity:.45;border-style:dashed;}
 .pc-reg{font-family:'Share Tech Mono',monospace;font-size:17px;font-weight:600;letter-spacing:1px;}
 .pc-reg.tow{color:var(--tow);}
 .pc-reg.glider{color:var(--gli);}
 .pc-reg.motorized{color:var(--mot);}
 .pc-type{font-size:12px;color:var(--txt2);}
 .pc-seats{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--txt3);}
-.pc-airborne{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--red);font-weight:700;}
 .plane-card.add-new{border-style:dashed;border-color:var(--brd2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;min-height:72px;}
 .plane-card.add-new:active{opacity:.5;}
 .add-new-plus{font-size:26px;font-weight:300;color:var(--txt3);line-height:1;}
 .add-new-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);}
 
-/* ===== PILOT SELECTION — horizontal scroll row ===== */
-/* Pilot cards: full-height horizontal strip instead of 2-col grid */
-.pilots-grid{
-  display:flex;flex-direction:row;
-  overflow-x:auto;overflow-y:hidden;
-  flex-shrink:0;
-  gap:6px;padding:6px 6px;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-  border-bottom:1px solid var(--brd);
-}
-.pilots-grid::-webkit-scrollbar{display:none;}
-.pilot-card{
-  flex-shrink:0;
-  min-width:100px;max-width:160px;
-  background:var(--surf);border:2px solid var(--brd2);border-radius:3px;
-  padding:12px 10px;font-size:14px;font-weight:700;letter-spacing:.2px;
-  cursor:pointer;text-align:center;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  transition:opacity .1s,border-color .12s;
-}
+/* pilot card — same grid, bigger text */
+.pilot-card{background:var(--surf);border:2px solid var(--brd2);border-radius:3px;padding:13px 10px;font-size:15px;font-weight:700;letter-spacing:.2px;cursor:pointer;text-align:center;transition:opacity .1s,border-color .12s;line-height:1.2;}
 .pilot-card:active{opacity:.5;}
-/* Greyed-out: pilot is airborne or already in this composition */
-.pilot-unavail{opacity:.38;border-style:dashed;}
-.pilot-unavail-note{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);font-weight:700;}
-.pilot-card.add-new{border-style:dashed;border-color:var(--brd2);min-width:70px;}
-
-/* ===== SOLO button — full-width, prominent green ===== */
-.btn-solo-full{
-  width:100%;background:var(--grn);color:#fff;
-  font-size:14px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
-  padding:11px;border-radius:3px;border:none;cursor:pointer;
-}
-.btn-solo-full:active{opacity:.75;}
-
-/* ===== Blocked LOG TAKEOFF ===== */
-.btn-log.btn-blocked{background:var(--brd2)!important;cursor:not-allowed;}
-.btn-log.btn-blocked .clk{opacity:.6;}
-.btn-log.btn-blocked .sub{opacity:.8;letter-spacing:1.5px;}
-
-/* pilot quick-add form */
+.pilot-card:focus{outline:none;border-color:var(--acc);}
+.pilot-card.add-new{border-style:dashed;border-color:var(--brd2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;font-size:26px;font-weight:300;color:var(--txt3);line-height:1;padding:10px;}
 .qadd-form{display:flex;flex-direction:column;gap:7px;padding:7px;flex:1;overflow-y:auto;}
+
 .no-items{grid-column:1/-1;display:flex;align-items:center;justify-content:center;padding:20px;color:var(--txt3);font-size:10px;letter-spacing:2px;text-transform:uppercase;text-align:center;line-height:1.7;}
 
 /* new name row at bottom of pilot view */
@@ -226,6 +188,7 @@ button{cursor:pointer;border:none;background:none;}
 .pilot-text-in:focus{border-color:var(--acc);}
 .pilot-text-in::placeholder{color:var(--txt3);font-weight:400;font-size:14px;}
 .pilot-add-btn{background:var(--acc);color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;border-radius:3px;flex-shrink:0;}
+.pilot-skip-btn{background:var(--surf2);border:1px solid var(--brd2);color:var(--txt2);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 10px;border-radius:3px;flex-shrink:0;}
 
 /* ACTION BUTTONS */
 .action-row{display:flex;align-items:center;gap:6px;padding:8px;height:100%;}
@@ -258,6 +221,13 @@ button{cursor:pointer;border:none;background:none;}
 .fn-dot{width:7px;height:7px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:3px;}
 .note-td{color:var(--txt2);font-style:italic;cursor:pointer;max-width:70px;overflow:hidden;text-overflow:ellipsis;}
 .log-empty{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--txt3);font-size:10px;letter-spacing:3px;text-transform:uppercase;}
+/* Editable cells in the log — times and pilot names */
+.log-edit-td{cursor:pointer;transition:background .1s;}
+.log-edit-td:active{background:rgba(17,102,255,.18)!important;}
+@media(hover:hover){.log-edit-td:hover{text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;}}
+/* UTC toggle button */
+.filter-tz-btn{background:var(--surf2);border:1px solid var(--brd2);color:var(--acc);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;border-radius:2px;white-space:nowrap;}
+.filter-tz-btn.utc-on{background:var(--acc);border-color:var(--acc);color:#fff;}
 
 /* ===== PRESETS OVERLAY ===== */
 #presets-overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.3,0,.2,1);}
@@ -312,35 +282,34 @@ button{cursor:pointer;border:none;background:none;}
 ::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px;}
 
 /* ===== DRAG & DROP — PILOT ASSIGNMENT ===== */
-/* p-chips with data-slot are interactive drop/tap targets */
-.p-chip[data-slot]{cursor:pointer;transition:border-color .1s,background .1s,box-shadow .1s,transform .1s;}
+.p-chip[data-slot]{cursor:pointer;transition:border-color .12s,background .12s,box-shadow .12s,transform .12s;}
 .p-chip[data-slot]:active{opacity:.65;transform:scale(.96);}
-/* Drop zone highlight while a pilot ghost hovers over */
 .p-chip.drop-over{
   border-color:var(--acc)!important;
-  background:rgba(17,102,255,.22)!important;
+  background:rgba(17,102,255,.24)!important;
   color:var(--txt)!important;
   box-shadow:0 0 0 2px var(--acc);
-  transform:scale(1.08);
+  transform:scale(1.07);
+  transition:all .08s;
 }
-/* Ghost element that follows the finger during drag */
+/* Ghost: GPU-composited, no pointer events, crisp */
 .pilot-drag-ghost{
-  position:fixed;z-index:9999;pointer-events:none;
-  border-radius:3px;font-size:15px;font-weight:700;
-  padding:13px 10px;text-align:center;line-height:1.2;
-  background:var(--surf);border:2px solid var(--acc);
-  box-shadow:0 8px 28px rgba(0,0,0,.55);
-  transform-origin:center center;
-  opacity:.92;
+  position:fixed;z-index:9999;pointer-events:none;will-change:left,top;
+  border-radius:4px;font-size:14px;font-weight:700;letter-spacing:.2px;
+  padding:12px 10px;text-align:center;line-height:1.2;
+  background:var(--surf);border:2px solid var(--acc);color:var(--txt);
+  box-shadow:0 12px 36px rgba(0,0,0,.65),0 2px 8px rgba(17,102,255,.3);
   font-family:'Barlow Condensed','Arial Narrow',sans-serif;
+  transform:scale(1.06);opacity:.95;
 }
-/* Drag hint label in pilot panel */
 .drag-hint-bar{
   font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
   color:var(--txt3);text-align:center;padding:3px 0 2px;flex-shrink:0;
 }
-/* Source card while being dragged */
-.pilot-card.is-dragging{opacity:.3;transform:scale(.97);}
+.pilot-card.is-dragging{opacity:.22;transform:scale(.95);transition:opacity .1s,transform .1s;}
+/* Toast notification */
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes toastOut{from{opacity:1}to{opacity:0}}
 </style>
 </head>
 <body data-theme="dark">
@@ -394,6 +363,7 @@ button{cursor:pointer;border:none;background:none;}
         <option value="">ALL FLIGHTS</option>
       </select>
       <button class="filter-all" onclick="clearFilter()">ALL</button>
+      <button class="filter-tz-btn" id="tz-btn" onclick="toggleTZ()">UTC</button>
     </div>
     <div class="log-stats" id="log-stats"></div>
     <div class="log-wrap">
@@ -471,6 +441,7 @@ const S = {
   airborne:[], log:[], takeoffs:0,
   landId:null, landSlot:null,
   logFilter:'', timeCb:null,
+  utcMode: false,   // true = display times as UTC in the log
 };
 let Fs={fn:'glider',seats:1};
 let Qa={fn:'glider',seats:1}; // quick-add state in composer bottom
@@ -595,71 +566,6 @@ function focusPilotSlot(slot,sub,ev){
   renderComp(); renderBottom();
 }
 
-/* ======= AIRBORNE CONFLICT HELPERS ======= */
-/* Returns Set of plane registrations that are currently in the air (no landing yet) */
-function getAirbornePlaneRegs(){
-  const regs=new Set();
-  S.airborne.forEach(en=>{
-    if(en.type==='aerotow'){
-      if(!en.tow.ldgTime)    regs.add(en.tow.plane.reg);
-      if(!en.glider.ldgTime) regs.add(en.glider.plane.reg);
-    } else {
-      if(!en.ldgTime) regs.add(en.plane.reg);
-    }
-  });
-  return regs;
-}
-
-/* Returns Set of pilot names who are currently airborne */
-function getAirbornePilots(){
-  const pilots=new Set();
-  S.airborne.forEach(en=>{
-    if(en.type==='aerotow'){
-      if(!en.tow.ldgTime && en.tow.pilot)         pilots.add(en.tow.pilot);
-      if(!en.glider.ldgTime) en.glider.pilots.filter(Boolean).forEach(p=>pilots.add(p));
-    } else {
-      if(!en.ldgTime) en.pilots.filter(Boolean).forEach(p=>pilots.add(p));
-    }
-  });
-  return pilots;
-}
-
-/* Returns Set of pilots already assigned in the current composition,
-   excluding the slot/sub currently being filled (so re-selecting is allowed) */
-function getComposerPilotsExcludingCurrent(){
-  const focus=S.focus||{};
-  const pilots=new Set();
-  // Tow pilot
-  if(focus.slot!=='tow' && S.comp.tow.pilot) pilots.add(S.comp.tow.pilot);
-  // Glider pilots
-  S.comp.glider.pilots.forEach((p,i)=>{
-    const isCurrent=focus.slot==='glider'&&focus.sub===(i===0?'p0':'p1');
-    if(p&&!isCurrent) pilots.add(p);
-  });
-  // Single pilots
-  S.comp.single.pilots.forEach((p,i)=>{
-    const isCurrent=focus.slot==='single'&&focus.sub===(i===0?'p0':'p1');
-    if(p&&!isCurrent) pilots.add(p);
-  });
-  return pilots;
-}
-
-/* True when the current composition contains a plane or pilot that is still airborne */
-function hasAirborneConflict(){
-  const ap=getAirbornePlaneRegs();
-  const pp=getAirbornePilots();
-  if(S.mode==='aerotow'){
-    if(S.comp.tow.plane   && ap.has(S.comp.tow.plane.reg))   return true;
-    if(S.comp.glider.plane && ap.has(S.comp.glider.plane.reg)) return true;
-    if(S.comp.tow.pilot   && pp.has(S.comp.tow.pilot))        return true;
-    if(S.comp.glider.pilots.some(p=>p&&pp.has(p)))            return true;
-  } else {
-    if(S.comp.single.plane && ap.has(S.comp.single.plane.reg)) return true;
-    if(S.comp.single.pilots.some(p=>p&&pp.has(p)))             return true;
-  }
-  return false;
-}
-
 function selectPlaneById(id){
   const pl=S.planes.find(p=>p.id===id); if(!pl)return;
   const slot=S.focus.slot;
@@ -667,12 +573,18 @@ function selectPlaneById(id){
   else if(slot==='glider'){ S.comp.glider.plane=pl; S.comp.glider.pilots=[null,null]; S.focus={slot:'glider',sub:'p0'}; }
   else{ S.comp.single.plane=pl; S.comp.single.pilots=[null,null]; S.focus={slot:'single',sub:'p0'}; }
   S.bmode='pilots'; renderComp(); renderBottom();
-  // NOTE: keyboard does NOT auto-open — user taps the text field when they want to type a new name
+  setTimeout(()=>{ const el=document.getElementById('new-pilot-in'); if(el)el.focus(); },100);
 }
 
 function selectPilotByKey(el){ selectPilot(el.dataset.pilot); }
 
 function selectPilot(name){
+  // Block: pilot already assigned to another slot in this same takeoff
+  const composerPilots=getComposerPilotsExcludingCurrent();
+  if(composerPilots.has(name)){
+    showToast('ALREADY IN THIS TAKEOFF');
+    return;
+  }
   const {slot,sub}=S.focus;
   if(slot==='tow'){
     S.comp.tow.pilot=name;
@@ -957,13 +869,10 @@ function renderBottom(){
 }
 
 /* ======= PILOT DRAG & DROP ENGINE ======= */
-// Single global drag state — one finger, one ghost
 let _pilotDrag = null;
 
 function initPilotDrag(){
-  const cards = document.querySelectorAll('#bottom-content .pilot-card:not(.add-new)');
-  cards.forEach(card => {
-    // Prevent duplicate listener binding (re-renders recreate DOM so always fresh)
+  document.querySelectorAll('#bottom-content .pilot-card:not(.add-new)').forEach(card=>{
     card.addEventListener('touchstart', _onPilotTouchStart, {passive:true});
     card.addEventListener('touchmove',  _onPilotTouchMove,  {passive:false});
     card.addEventListener('touchend',   _onPilotTouchEnd,   {passive:true});
@@ -974,92 +883,143 @@ function initPilotDrag(){
 function _onPilotTouchStart(e){
   if(e.touches.length!==1) return;
   const t=e.touches[0];
-  // Store start info on the element itself for this touch
-  this._pdStart={x:t.clientX,y:t.clientY,id:t.identifier,active:false,card:this};
+  const rect=this.getBoundingClientRect();
+  this._pdStart={
+    x:t.clientX, y:t.clientY, id:t.identifier, active:false,
+    // Offset of finger within card — keeps ghost aligned to touch point
+    offX:t.clientX-rect.left, offY:t.clientY-rect.top, rect
+  };
 }
 
 function _onPilotTouchMove(e){
   const info=this._pdStart; if(!info) return;
   const touch=[...e.touches].find(x=>x.identifier===info.id); if(!touch) return;
   const dx=touch.clientX-info.x, dy=touch.clientY-info.y;
-  const dist=Math.hypot(dx,dy);
 
   if(!info.active){
-    if(dist<14) return; // dead-zone — haven't moved enough yet
-    // Kick off drag
+    if(Math.hypot(dx,dy)<10) return; // 10px dead zone — tighter = snappier
     info.active=true;
     const name=this.dataset.pilot;
-    const rect=this.getBoundingClientRect();
+    const r=info.rect;
 
     const ghost=document.createElement('div');
     ghost.className='pilot-drag-ghost';
     ghost.textContent=name;
-    ghost.style.left=rect.left+'px';
-    ghost.style.top =rect.top +'px';
-    ghost.style.width=rect.width+'px';
+    ghost.style.width=r.width+'px';
+    // Start ghost exactly under finger
+    ghost.style.left=(touch.clientX-info.offX)+'px';
+    ghost.style.top =(touch.clientY-info.offY)+'px';
     document.body.appendChild(ghost);
 
-    _pilotDrag={name,ghost,rect,ox:info.x,oy:info.y,srcCard:this};
+    // Pop-in: spring from slightly small to slightly large
+    ghost.animate(
+      [{transform:'scale(0.82)',opacity:0.4},{transform:'scale(1.06)',opacity:0.95}],
+      {duration:160, fill:'forwards', easing:'cubic-bezier(0.34,1.56,0.64,1)'}
+    );
+
+    _pilotDrag={name, ghost, offX:info.offX, offY:info.offY, srcCard:this};
     this.classList.add('is-dragging');
   }
 
   if(info.active && _pilotDrag){
-    // Move ghost
-    _pilotDrag.ghost.style.left=(_pilotDrag.rect.left+dx)+'px';
-    _pilotDrag.ghost.style.top =(_pilotDrag.rect.top +dy)+'px';
-    // Highlight drop zones
+    const g=_pilotDrag.ghost;
+    g.style.left=(touch.clientX-_pilotDrag.offX)+'px';
+    g.style.top =(touch.clientY-_pilotDrag.offY)+'px';
+
+    // Highlight chips — slightly expanded hit area for comfort
     document.querySelectorAll('.p-chip[data-slot]').forEach(chip=>{
-      const cr=chip.getBoundingClientRect();
-      const over=touch.clientX>=cr.left&&touch.clientX<=cr.right&&
-                 touch.clientY>=cr.top &&touch.clientY<=cr.bottom;
-      chip.classList.toggle('drop-over',over);
+      const cr=chip.getBoundingClientRect(); const pad=8;
+      chip.classList.toggle('drop-over',
+        touch.clientX>=cr.left-pad && touch.clientX<=cr.right+pad &&
+        touch.clientY>=cr.top -pad && touch.clientY<=cr.bottom+pad);
     });
-    e.preventDefault(); // suppress scroll only while dragging
+    e.preventDefault(); // suppress scroll only while truly dragging
   }
 }
 
-function _onPilotTouchEnd(e){
-  _cleanupPilotDrag(e.changedTouches[0]);
-}
-function _onPilotTouchCancel(){
-  _cleanupPilotDrag(null);
-}
+function _onPilotTouchEnd(e){ _cleanupPilotDrag(e.changedTouches[0]); }
+function _onPilotTouchCancel(){ _cleanupPilotDrag(null); }
 
 function _cleanupPilotDrag(touch){
   const drag=_pilotDrag;
-  // Reset source card
   document.querySelectorAll('.pilot-card.is-dragging').forEach(c=>c.classList.remove('is-dragging'));
-  // Clear any leftover drag state on cards
   document.querySelectorAll('#bottom-content .pilot-card').forEach(c=>{ c._pdStart=null; });
   document.querySelectorAll('.p-chip.drop-over').forEach(c=>c.classList.remove('drop-over'));
 
   if(drag){
-    drag.ghost.remove();
     _pilotDrag=null;
+    let dropped=false;
     if(touch && drag.name){
-      // Hit-test: find the chip under the released finger
       document.querySelectorAll('.p-chip[data-slot]').forEach(chip=>{
-        const cr=chip.getBoundingClientRect();
-        if(touch.clientX>=cr.left&&touch.clientX<=cr.right&&
-           touch.clientY>=cr.top &&touch.clientY<=cr.bottom){
-          dropPilotToSlot(drag.name, chip.dataset.slot, chip.dataset.sub);
+        const cr=chip.getBoundingClientRect(); const pad=8;
+        if(touch.clientX>=cr.left-pad && touch.clientX<=cr.right+pad &&
+           touch.clientY>=cr.top -pad && touch.clientY<=cr.bottom+pad){
+          dropped=true;
+          // Animate ghost snapping into chip before removing
+          const cr2=chip.getBoundingClientRect();
+          drag.ghost.animate(
+            [{},{left:cr2.left+'px', top:cr2.top+'px', width:cr2.width+'px', transform:'scale(1)', opacity:0.5}],
+            {duration:120, fill:'forwards', easing:'ease-in'}
+          );
+          setTimeout(()=>{ drag.ghost.remove(); dropPilotToSlot(drag.name,chip.dataset.slot,chip.dataset.sub); },110);
         }
       });
+    }
+    if(!dropped){
+      // Snap ghost back and fade out
+      drag.ghost.animate([{},{opacity:0,transform:'scale(0.8)'}],{duration:180,fill:'forwards',easing:'ease-in'});
+      setTimeout(()=>drag.ghost.remove(),175);
     }
   }
 }
 
-/* Assign a pilot to a specific slot/sub, bypassing sequential flow */
-function dropPilotToSlot(name,slot,sub){
-  if(slot==='tow'){
-    S.comp.tow.pilot=name;
-  } else if(slot==='glider'){
-    S.comp.glider.pilots[sub==='p0'?0:1]=name;
-  } else {
-    S.comp.single.pilots[sub==='p0'?0:1]=name;
+/* Assign a pilot to a specific slot/sub via drag-and-drop.
+   - If dragged pilot is already in the SAME plane at the OTHER sub → swap seats.
+   - If dragged pilot is already in a DIFFERENT slot of this takeoff → block (toast).
+   - Otherwise → assign. */
+function dropPilotToSlot(dragName, targetSlot, targetSub){
+  const targetIdx=targetSub==='p0'?0:1;
+
+  // Check for same-plane swap first
+  if(targetSlot==='glider'){
+    const ps=S.comp.glider.pilots;
+    const srcIdx=ps.indexOf(dragName);
+    if(srcIdx!==-1 && srcIdx!==targetIdx){
+      // Swap
+      [ps[0],ps[1]]=[ps[1],ps[0]];
+      if(isReady()){S.focus=null;S.bmode='ready';} else advReady();
+      renderComp(); renderBottom(); return;
+    }
+  } else if(targetSlot==='single'){
+    const ps=S.comp.single.pilots;
+    const srcIdx=ps.indexOf(dragName);
+    if(srcIdx!==-1 && srcIdx!==targetIdx){
+      [ps[0],ps[1]]=[ps[1],ps[0]];
+      if(isReady()){S.focus=null;S.bmode='ready';} else advReady();
+      renderComp(); renderBottom(); return;
+    }
   }
-  if(isReady()){S.focus=null;S.bmode='ready';}
-  else advReady();
+
+  // Collect all occupied slots EXCEPT the target destination
+  const occupied=new Set();
+  if(targetSlot!=='tow' && S.comp.tow.pilot) occupied.add(S.comp.tow.pilot);
+  S.comp.glider.pilots.forEach((p,i)=>{
+    if(p && !(targetSlot==='glider' && (i===0?'p0':'p1')===targetSub)) occupied.add(p);
+  });
+  S.comp.single.pilots.forEach((p,i)=>{
+    if(p && !(targetSlot==='single' && (i===0?'p0':'p1')===targetSub)) occupied.add(p);
+  });
+
+  if(occupied.has(dragName)){
+    showToast('ALREADY IN THIS TAKEOFF'); return;
+  }
+
+  // Normal assign
+  if(targetSlot==='tow')          S.comp.tow.pilot=dragName;
+  else if(targetSlot==='glider')  S.comp.glider.pilots[targetIdx]=dragName;
+  else                            S.comp.single.pilots[targetIdx]=dragName;
+
+  if(isReady()){S.focus=null;S.bmode='ready';} else advReady();
   renderComp(); renderBottom();
 }
 
@@ -1074,17 +1034,11 @@ function renderBPlanes(){
   const fns=S.focus.slot==='tow'?['tow']:S.focus.slot==='glider'?['glider']:['tow','motorized'];
   const lbl={tow:'TOWPLANE',glider:'GLIDER',single:'TOW / MOTORIZED'}[S.focus.slot];
   const list=S.planes.filter(p=>fns.includes(p.fn));
-  const airbornePlanes=getAirbornePlaneRegs();
-  const cards=list.map(p=>{
-    const abn=airbornePlanes.has(p.reg);
-    return `<div class="plane-card ${p.fn}${abn?' plane-airborne':''}" onclick="selectPlaneById('${p.id}')">
+  const cards=list.map(p=>`<div class="plane-card ${p.fn}" onclick="selectPlaneById('${p.id}')">
       <div class="pc-reg ${p.fn}">${p.reg}</div>
       <div class="pc-type">${p.type}</div>
-      ${abn
-        ?`<div class="pc-airborne">AIRBORNE</div>`
-        :`<div class="pc-seats">${p.seats} SEAT${p.seats>1?'S':''}</div>`}
-    </div>`;
-  }).join('');
+      <div class="pc-seats">${p.seats} SEAT${p.seats>1?'S':''}</div>
+    </div>`).join('');
   const addCard=`<div class="plane-card add-new" onclick="openQuickAddPlane()">
     <div class="add-new-plus">+</div>
     <div class="add-new-lbl">NEW</div>
@@ -1098,46 +1052,27 @@ function renderBPlanes(){
 function renderBPilots(){
   const isP2=S.focus&&S.focus.sub==='p1';
   const label=isP2?'PILOT 2':'PILOT 1';
+  // Show which slot/plane this pilot is being assigned to
   const slot=S.focus?S.focus.slot:'';
   const plane=slot==='tow'?S.comp.tow.plane:slot==='glider'?S.comp.glider.plane:S.comp.single.plane;
   const planeHint=plane?` — ${plane.reg}`:'';
-
-  const airbornePilots=getAirbornePilots();
-  const composerPilots=getComposerPilotsExcludingCurrent();
-
-  const cards=S.pilots.map(p=>{
-    const isAirborne=airbornePilots.has(p);
-    const inComposer=composerPilots.has(p);
-    const unavail=isAirborne||inComposer;
-    const note=isAirborne?'AIRBORNE':inComposer?'IN USE':'';
-    // Card is always tappable — greyed ones just block the takeoff button later
-    return `<div class="pilot-card${unavail?' pilot-unavail':''}" data-pilot="${p.replace(/"/g,'&quot;')}" onclick="selectPilotByKey(this)">
-      <span>${p}</span>${note?`<span class="pilot-unavail-note">${note}</span>`:''}
-    </div>`;
-  }).join('');
-
-  const addCard=`<div class="pilot-card add-new" onclick="focusNewPilot()" title="Type new name">
+  const cards=S.pilots.map(p=>`<div class="pilot-card" data-pilot="${p.replace(/"/g,'&quot;')}" onclick="selectPilotByKey(this)">${p}</div>`).join('');
+  const addCard=`<div class="pilot-card add-new" onclick="focusNewPilot()">
     <div class="add-new-plus">+</div>
     <div class="add-new-lbl">NEW</div>
   </div>`;
-
-  const dragHint=S.pilots.length?`<div class="drag-hint-bar">DRAG ↑ TO SLOT &nbsp;·&nbsp; TAP TO ASSIGN</div>`:'';
-
-  // SOLO button: only shown for P2, as a full-width prominent green row
-  const soloBtn=isP2
-    ?`<div style="padding:4px 5px 0;"><button class="btn-solo-full" onclick="skipP2()">SOLO — NO SECOND PILOT</button></div>`
-    :'';
-
+  const dragHint=S.pilots.length?`<div class="drag-hint-bar">DRAG ↑ TO SLOT &nbsp;·&nbsp; OR TAP TO ASSIGN</div>`:'';
   return `<div style="display:flex;flex-direction:column;height:100%;">
     <div class="bottom-lbl">
       <span>SELECT ${label}${planeHint}</span>
+      ${isP2?`<span class="bottom-lbl-r" onclick="skipP2()">SOLO &#8594;</span>`:''}
     </div>
     ${dragHint}
-    <div class="pilots-grid">${cards}${addCard}</div>
-    ${soloBtn}
+    <div class="sel-grid pilots-grid">${cards}${addCard}</div>
     <div class="pilot-new-row">
-      <input type="text" class="pilot-text-in" id="new-pilot-in" placeholder="Tap here to type a new name..." autocomplete="off" autocorrect="off" autocapitalize="words">
+      <input type="text" class="pilot-text-in" id="new-pilot-in" placeholder="Type new name..." autocomplete="off" autocorrect="off" autocapitalize="words">
       <button class="pilot-add-btn" onclick="confirmNewPilot()">ADD</button>
+      ${isP2?`<button class="pilot-skip-btn" onclick="skipP2()">SOLO</button>`:''}
     </div>
   </div>`;
 }
@@ -1155,17 +1090,13 @@ function confirmNewPilot(){
 }
 
 function renderBReady(){
-  const blocked=hasAirborneConflict();
   return `<div class="action-row">
     <button class="btn-side" onclick="clearComp()">CLEAR</button>
-    <button class="btn-log takeoff${blocked?' btn-blocked':''}"
-            onclick="${blocked?'':'logTakeoff()'}"
-            style="${blocked?'cursor:not-allowed;':''}" >
+    <button class="btn-log takeoff" onclick="logTakeoff()">
       <span class="clk live-clock">${getNow()}</span>
-      <span class="sub">${blocked?'STILL AIRBORNE':'LOG TAKEOFF'}</span>
+      <span class="sub">LOG TAKEOFF</span>
     </button>
-    <button class="btn-side" onclick="${blocked?'':'openTimeModal(\'takeoff\')'}"
-            style="${blocked?'opacity:.35;cursor:not-allowed;':''}">SET<br>TIME</button>
+    <button class="btn-side" onclick="openTimeModal('takeoff')">SET<br>TIME</button>
   </div>`;
 }
 
@@ -1268,6 +1199,69 @@ function renderAbnSingle(en){
   </div>`;
 }
 
+/* ======= UTC / TIME DISPLAY ======= */
+/* getTimezoneOffset() = (UTC - local) in minutes, so UTC = local + offset */
+function localToUTC(t){
+  if(!t||!t.includes(':')) return t;
+  const [h,m]=t.split(':').map(Number);
+  const off=new Date().getTimezoneOffset(); // positive = west of UTC
+  let tot=((h*60+m+off)%1440+1440)%1440;
+  return p2(Math.floor(tot/60))+':'+p2(tot%60);
+}
+function displayTime(t){
+  if(!t) return null;
+  return S.utcMode ? localToUTC(t) : t;
+}
+function toggleTZ(){
+  S.utcMode=!S.utcMode;
+  const btn=document.getElementById('tz-btn');
+  if(btn){ btn.textContent=S.utcMode?'LOCAL':'UTC'; btn.classList.toggle('utc-on',S.utcMode); }
+  renderLog();
+}
+
+/* ======= TOAST NOTIFICATION ======= */
+function showToast(msg, ms=1800){
+  const el=document.createElement('div');
+  el.style.cssText='position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(0);'+
+    'background:var(--red);color:#fff;font-family:"Barlow Condensed",sans-serif;'+
+    'font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;'+
+    'padding:8px 16px;border-radius:3px;z-index:9999;pointer-events:none;'+
+    'animation:toastIn .2s ease-out;white-space:nowrap;';
+  el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(()=>{ el.style.animation='toastOut .2s ease-in'; setTimeout(()=>el.remove(),200); }, ms);
+}
+
+/* ======= LOG EDITING ======= */
+function editLogTime(entryId, field){
+  const e=S.log.find(x=>x.id===entryId); if(!e)return;
+  document.getElementById('tmodal-title').textContent=field==='to'?'EDIT TAKEOFF TIME':'EDIT LANDING TIME';
+  document.getElementById('tmodal-in').value=(field==='to'?e.toTime:e.ldgTime)||getNow();
+  document.getElementById('time-modal').classList.add('open');
+  S.timeCb=time=>{
+    if(field==='to'){
+      e.toTime=time;
+      // Aerotow pairs share the same takeoff time — sync partner
+      if(e.pair) S.log.filter(x=>x.pair===e.pair&&x.id!==e.id).forEach(x=>{
+        x.toTime=time;
+        if(x.ldgTime) x.dur=calcDur(x.toTime,x.ldgTime);
+      });
+      if(e.ldgTime) e.dur=calcDur(e.toTime,e.ldgTime);
+    } else {
+      e.ldgTime=time;
+      if(e.toTime) e.dur=calcDur(e.toTime,e.ldgTime);
+    }
+    save(); renderLog();
+  };
+}
+
+function editLogPilot(entryId, idx){
+  const e=S.log.find(x=>x.id===entryId); if(!e)return;
+  const cur=e.pilots[idx]||'';
+  const nv=prompt(`Edit ${idx===0?'Pilot 1':'Pilot 2'} — ${e.reg} (${e.acType}):`, cur);
+  if(nv!==null){ e.pilots[idx]=nv.trim(); save(); renderLog(); }
+}
+
 /* ======= RENDER: LOG ======= */
 function renderLog(){
   const tbody=document.getElementById('log-tbody');
@@ -1286,7 +1280,8 @@ function renderLog(){
   empty.style.display='none';
   const totM=entries.reduce((s,e)=>s+durMins(e.dur),0);
   const uq=[...new Set(entries.map(e=>e.num))].length;
-  stats.textContent=`${entries.length} FLIGHTS  |  ${uq} TAKEOFFS  |  TOTAL: ${p2(Math.floor(totM/60))}:${p2(totM%60)}`;
+  const tzTag=S.utcMode?' (UTC)':' (LCL)';
+  stats.textContent=`${entries.length} FLIGHTS  |  ${uq} TAKEOFFS  |  TOTAL: ${p2(Math.floor(totM/60))}:${p2(totM%60)}${tzTag}`;
 
   const grp={};let zi=0;
   entries.forEach(e=>{
@@ -1298,14 +1293,16 @@ function renderLog(){
   tbody.innerHTML=entries.map(e=>{
     const bg=e._z===0?'background:var(--z1)':'';
     const fc=e.fn==='tow'?'var(--tow)':e.fn==='motorized'?'var(--mot)':'var(--gli)';
+    const dTo=displayTime(e.toTime)||'—';
+    const dLdg=displayTime(e.ldgTime)||'—';
     return `<tr style="${bg}">
       <td class="mono">${e.num}</td>
       <td style="font-size:11px">${e.acType}</td>
       <td class="mono" style="color:${fc}"><span class="fn-dot" style="background:${fc}"></span>${e.reg}</td>
-      <td style="font-size:12px;font-weight:600">${e.pilots[0]||'—'}</td>
-      <td style="font-size:12px;color:var(--txt2)">${e.pilots[1]||''}</td>
-      <td class="mono">${e.toTime}</td>
-      <td class="mono">${e.ldgTime||'—'}</td>
+      <td class="log-edit-td" style="font-size:12px;font-weight:600" onclick="editLogPilot('${e.id}',0)" title="Tap to edit">${e.pilots[0]||'—'}</td>
+      <td class="log-edit-td" style="font-size:12px;color:var(--txt2)" onclick="editLogPilot('${e.id}',1)" title="Tap to edit">${e.pilots[1]||'+'}</td>
+      <td class="log-edit-td mono" onclick="editLogTime('${e.id}','to')" title="Tap to edit">${dTo}</td>
+      <td class="log-edit-td mono" onclick="editLogTime('${e.id}','ldg')" title="Tap to edit">${dLdg}</td>
       <td class="mono" style="font-weight:700">${e.dur||'—'}</td>
       <td class="note-td" onclick="editNote('${e.id}')">${e.note||'+'}</td>
     </tr>`;
