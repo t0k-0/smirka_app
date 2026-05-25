@@ -266,12 +266,22 @@ button{cursor:pointer;border:none;background:none;}
 .seg.mot-on{background:var(--mot);border-color:var(--mot);color:#fff;}
 .form-submit{background:var(--acc);color:#fff;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px;border-radius:3px;width:100%;}
 
+/* ===== SETUP OVERLAY ===== */
+#setup-overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.3,0,.2,1);}
+#setup-overlay.open{transform:translateX(0);}
+.setup-hdr{height:46px;background:var(--surf);border-bottom:2px solid var(--brd2);display:flex;align-items:center;padding:0 10px;gap:8px;flex-shrink:0;}
+.setup-title{font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;flex:1;}
+.setup-close{background:var(--surf2);border:1px solid var(--brd2);color:var(--txt);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:2px;}
+#setup-scroll{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:14px;}
+.setup-theme-btn{background:var(--surf2);border:1px solid var(--brd2);color:var(--txt);font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:3px;width:100%;}
+.setup-reset-btn{background:var(--red);color:#fff;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:3px;width:100%;}
+
 /* ===== TIME MODAL ===== */
 #time-modal{position:fixed;inset:0;background:rgba(0,0,0,.84);z-index:400;display:none;align-items:center;justify-content:center;}
 #time-modal.open{display:flex;}
-.tmodal-box{background:var(--surf);border:2px solid var(--brd2);border-radius:6px;padding:18px;width:260px;display:flex;flex-direction:column;gap:10px;}
+.tmodal-box{background:var(--surf);border:2px solid var(--brd2);border-radius:6px;padding:18px;width:min(280px,calc(100vw - 32px));display:flex;flex-direction:column;gap:10px;margin:0 auto;}
 .tmodal-title{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--txt2);}
-.tmodal-in{background:var(--surf2);border:2px solid var(--brd2);border-radius:3px;color:var(--txt);font-family:'Share Tech Mono',monospace;font-size:36px;font-weight:600;padding:8px;text-align:center;outline:none;width:100%;letter-spacing:4px;}
+.tmodal-in{background:var(--surf2);border:2px solid var(--brd2);border-radius:3px;color:var(--txt);font-family:'Share Tech Mono',monospace;font-size:36px;font-weight:600;padding:8px;text-align:center;outline:none;width:100%;min-width:0;letter-spacing:4px;display:block;box-sizing:border-box;}
 .tmodal-in:focus{border-color:var(--acc);}
 .tmodal-btns{display:flex;gap:7px;}
 .tmodal-cancel{flex:1;background:var(--surf2);border:1px solid var(--brd);color:var(--txt);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px;border-radius:3px;}
@@ -322,7 +332,7 @@ button{cursor:pointer;border:none;background:none;}
     </div>
     <span class="date-str" id="hdr-date"></span>
     <div class="hdr-btns">
-      <button class="hdr-btn" id="theme-btn" onclick="toggleTheme()">LIGHT</button>
+      <button class="hdr-btn" onclick="openSetup()">SETUP</button>
       <button class="hdr-btn" onclick="openPresets()">+ PRESETS</button>
     </div>
   </div>
@@ -388,6 +398,15 @@ button{cursor:pointer;border:none;background:none;}
     <div id="presets-scroll"></div>
   </div>
 
+  <!-- SETUP OVERLAY -->
+  <div id="setup-overlay">
+    <div class="setup-hdr">
+      <span class="setup-title">SETUP</span>
+      <button class="setup-close" onclick="closeSetup()">DONE</button>
+    </div>
+    <div id="setup-scroll"></div>
+  </div>
+
   <!-- TIME MODAL -->
   <div id="time-modal">
     <div class="tmodal-box">
@@ -430,6 +449,7 @@ const fullDate = () => {
 /* ======= STATE ======= */
 const S = {
   theme:'dark', mode:'aerotow',
+  airport:'',
   planes:[], pilots:[],
   comp:{
     tow:{plane:null,pilot:null},
@@ -450,7 +470,7 @@ let Qa={fn:'glider',seats:1}; // quick-add state in composer bottom
 function save(){
   try{
     localStorage.setItem('gl5',JSON.stringify({
-      theme:S.theme,planes:S.planes,pilots:S.pilots,
+      theme:S.theme,airport:S.airport,planes:S.planes,pilots:S.pilots,
       log:S.log,airborne:S.airborne,takeoffs:S.takeoffs,
       date:new Date().toDateString()
     }));
@@ -461,6 +481,7 @@ function load(){
     const raw=localStorage.getItem('gl5'); if(!raw)return;
     const d=JSON.parse(raw);
     S.theme=d.theme||'dark';
+    S.airport=d.airport||'';
     S.planes=d.planes||[]; S.pilots=d.pilots||[];
     if(d.date===new Date().toDateString()){
       S.log=d.log||[]; S.airborne=d.airborne||[]; S.takeoffs=d.takeoffs||0;
@@ -471,7 +492,8 @@ function load(){
 /* ======= THEME ======= */
 function applyTheme(){
   document.body.setAttribute('data-theme',S.theme);
-  document.getElementById('theme-btn').textContent=S.theme==='dark'?'LIGHT':'DARK';
+  const btn=document.getElementById('setup-theme-btn');
+  if(btn) btn.textContent=S.theme==='dark'?'☀  SWITCH TO LIGHT MODE':'☾  SWITCH TO DARK MODE';
 }
 function toggleTheme(){ S.theme=S.theme==='dark'?'light':'dark'; applyTheme(); save(); }
 
@@ -1435,6 +1457,53 @@ function addPilotPreset(){
 function delPlane(id){ S.planes=S.planes.filter(p=>p.id!==id); save(); renderPresets(); }
 function delPilot(i){ S.pilots.splice(i,1); save(); renderPresets(); }
 
+/* ======= SETUP OVERLAY ======= */
+function openSetup(){ document.getElementById('setup-overlay').classList.add('open'); renderSetup(); }
+function closeSetup(){ document.getElementById('setup-overlay').classList.remove('open'); }
+
+function renderSetup(){
+  const scr=document.getElementById('setup-scroll');
+  const ap=S.airport||'';
+  scr.innerHTML=`
+    <div class="ps-section">
+      <div class="ps-sec-hdr">APPEARANCE</div>
+      <button id="setup-theme-btn" class="setup-theme-btn" onclick="toggleTheme()">
+        ${S.theme==='dark'?'☀\u2002SWITCH TO LIGHT MODE':'☾\u2002SWITCH TO DARK MODE'}
+      </button>
+    </div>
+    <div class="ps-section">
+      <div class="ps-sec-hdr">AIRPORT</div>
+      <div class="add-form">
+        <div class="form-row">
+          <span class="form-lbl">ICAO</span>
+          <input class="form-in" id="setup-airport" placeholder="e.g. LKTB" autocomplete="off"
+            autocapitalize="characters" style="text-transform:uppercase;" value="${ap}">
+        </div>
+        <button class="form-submit" onclick="saveAirport()">SAVE AIRPORT</button>
+      </div>
+    </div>
+    <div class="ps-section">
+      <div class="ps-sec-hdr">DANGER ZONE</div>
+      <button class="setup-reset-btn" onclick="resetAll()">RESET ALL DATA</button>
+    </div>
+  `;
+  const ai=document.getElementById('setup-airport');
+  if(ai) ai.addEventListener('keydown',e=>{ if(e.key==='Enter') saveAirport(); });
+}
+
+function saveAirport(){
+  const v=(document.getElementById('setup-airport').value||'').trim().toUpperCase();
+  S.airport=v; save();
+  showToast(v?'AIRPORT SAVED: '+v:'AIRPORT CLEARED');
+}
+
+function resetAll(){
+  if(!confirm('Reset ALL presets and flight logs?\nThis cannot be undone.')) return;
+  S.planes=[]; S.pilots=[]; S.log=[]; S.airborne=[]; S.takeoffs=0; S.airport='';
+  save(); closeSetup(); renderAll();
+  showToast('ALL DATA CLEARED');
+}
+
 /* ======= TIME MODAL ======= */
 function openTimeModal(type){
   document.getElementById('tmodal-title').textContent=type==='takeoff'?'SET TAKEOFF TIME':'SET LANDING TIME';
@@ -1520,7 +1589,7 @@ tbody tr:last-child td{border-bottom:1.5px solid #aaa;}
 </style></head><body>
 <div class="hd">
   <h1>Šmírka Mobile &mdash; Flight Record</h1>
-  <div class="dt">Date: <b>${fullDate()}</b></div>
+  <div class="dt">Date: <b>${fullDate()}</b>${S.airport?` &nbsp;&middot;&nbsp; Airport: <b>${S.airport}</b>`:''}</div>
   ${filterNote}
 </div>
 <table>
