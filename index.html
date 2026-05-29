@@ -266,30 +266,115 @@ button{cursor:pointer;border:none;background:none;}
 .seg.mot-on{background:var(--mot);border-color:var(--mot);color:#fff;}
 .form-submit{background:var(--acc);color:#fff;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px;border-radius:3px;width:100%;}
 
-/* ===== SETUP OVERLAY ===== */
-#setup-overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.3,0,.2,1);}
-#setup-overlay.open{transform:translateX(0);}
-.setup-hdr{height:46px;background:var(--surf);border-bottom:2px solid var(--brd2);display:flex;align-items:center;padding:0 10px;gap:8px;flex-shrink:0;}
-.setup-title{font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;flex:1;}
-.setup-close{background:var(--surf2);border:1px solid var(--brd2);color:var(--txt);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:2px;}
-#setup-scroll{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:14px;}
-.setup-theme-btn{background:var(--surf2);border:1px solid var(--brd2);color:var(--txt);font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:3px;width:100%;}
-.setup-reset-btn{background:var(--red);color:#fff;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:3px;width:100%;}
-
 /* ===== TIME MODAL ===== */
-#time-modal{position:fixed;inset:0;background:rgba(0,0,0,.84);z-index:400;display:none;align-items:center;justify-content:center;}
+#time-modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:400;display:none;align-items:center;justify-content:center;padding:20px;}
 #time-modal.open{display:flex;}
-.tmodal-box{background:var(--surf);border:2px solid var(--brd2);border-radius:6px;padding:18px;width:min(280px,calc(100vw - 32px));display:flex;flex-direction:column;gap:10px;margin:0 auto;}
-.tmodal-title{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--txt2);}
-.tmodal-in{background:var(--surf2);border:2px solid var(--brd2);border-radius:3px;color:var(--txt);font-family:'Share Tech Mono',monospace;font-size:36px;font-weight:600;padding:8px;text-align:center;outline:none;width:100%;min-width:0;letter-spacing:4px;display:block;box-sizing:border-box;}
+.tmodal-box{background:var(--surf);border:2px solid var(--brd2);border-radius:8px;padding:20px 16px;width:100%;max-width:300px;display:flex;flex-direction:column;gap:12px;box-shadow:0 24px 60px rgba(0,0,0,.7);}
+.tmodal-title{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--txt2);text-align:center;}
+.tmodal-in{background:var(--surf2);border:2px solid var(--brd2);border-radius:4px;color:var(--txt);font-family:'Share Tech Mono',monospace;font-size:clamp(26px,8vw,40px);font-weight:600;padding:10px 8px;text-align:center;outline:none;width:100%;letter-spacing:3px;}
 .tmodal-in:focus{border-color:var(--acc);}
-.tmodal-btns{display:flex;gap:7px;}
-.tmodal-cancel{flex:1;background:var(--surf2);border:1px solid var(--brd);color:var(--txt);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px;border-radius:3px;}
-.tmodal-ok{flex:1;background:var(--acc);color:#fff;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px;border-radius:3px;}
+.tmodal-btns{display:flex;gap:8px;}
+.tmodal-cancel{flex:1;background:var(--surf2);border:1px solid var(--brd);color:var(--txt);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:11px;border-radius:4px;}
+.tmodal-ok{flex:1;background:var(--acc);color:#fff;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:11px;border-radius:4px;}
 
 ::-webkit-scrollbar{width:3px;height:3px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px;}
+
+/* ===== PILOT HORIZONTAL SCROLL STRIP ===== */
+/* Wrapper provides the right-edge fade "handle" hinting more cards */
+.pilots-scroll-wrap{position:relative;flex:1;min-height:0;}
+.pilots-scroll-wrap::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:10px;
+  background:linear-gradient(to right,var(--bg),transparent);
+  pointer-events:none;z-index:2;
+}
+.pilots-scroll-wrap::after{
+  content:'';position:absolute;top:0;right:0;bottom:0;width:48px;
+  background:linear-gradient(to left,var(--bg) 30%,transparent 100%);
+  pointer-events:none;z-index:2;
+}
+.pilots-grid{
+  display:flex;flex-direction:row;flex-wrap:nowrap;
+  overflow-x:auto;overflow-y:hidden;
+  gap:7px;padding:7px 10px;
+  height:100%;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.pilots-grid::-webkit-scrollbar{display:none;}
+/* Each pilot card: fixed-height pill in the horizontal strip */
+.pilots-grid .pilot-card{
+  flex-shrink:0;
+  min-width:90px;max-width:160px;
+  height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  font-size:14px;
+}
+/* Scroll hint text below strip */
+.pilots-scroll-hint{
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--txt3);text-align:center;padding:2px 0;flex-shrink:0;
+}
+/* Greyed-out unavailable states */
+.pilot-unavail{opacity:.35;border-style:dashed;}
+.pilot-unavail-note{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--red);font-weight:700;margin-top:1px;}
+/* Big green SOLO full-width button */
+.btn-solo-full{
+  width:100%;background:var(--grn);color:#fff;
+  font-size:14px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  padding:11px;border-radius:3px;border:none;cursor:pointer;flex-shrink:0;
+}
+.btn-solo-full:active{opacity:.75;}
+
+/* ===== SETUP OVERLAY (bottom sheet) ===== */
+#setup-overlay{
+  position:fixed;inset:0;z-index:300;
+  display:flex;align-items:flex-end;
+  pointer-events:none;opacity:0;
+  transition:opacity .22s;
+}
+#setup-overlay.open{pointer-events:all;opacity:1;}
+.setup-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.65);}
+.setup-sheet{
+  position:relative;width:100%;
+  background:var(--surf);border:2px solid var(--brd2);border-bottom:none;
+  border-radius:14px 14px 0 0;
+  padding:10px 16px 32px;
+  transform:translateY(102%);
+  transition:transform .28s cubic-bezier(.3,0,.2,1);
+  display:flex;flex-direction:column;gap:12px;
+}
+#setup-overlay.open .setup-sheet{transform:translateY(0);}
+/* Drag handle pill */
+.setup-grip{width:40px;height:4px;background:var(--brd2);border-radius:2px;margin:0 auto 6px;flex-shrink:0;}
+.setup-title{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  color:var(--txt2);text-align:center;flex-shrink:0;}
+.setup-row{display:flex;align-items:center;gap:10px;min-height:44px;}
+.setup-row-label{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--txt2);flex:1;}
+.setup-toggle-btn{background:var(--surf2);border:1px solid var(--brd2);color:var(--txt);
+  font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:8px 16px;border-radius:3px;flex-shrink:0;white-space:nowrap;}
+.setup-input{
+  flex:1;background:var(--surf2);border:1px solid var(--brd2);border-radius:3px;
+  color:var(--txt);font-family:'Share Tech Mono',monospace;font-size:16px;font-weight:600;
+  padding:8px 10px;outline:none;letter-spacing:1px;text-transform:uppercase;min-width:0;
+}
+.setup-input:focus{border-color:var(--acc);}
+.setup-input::placeholder{color:var(--txt3);font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;text-transform:none;letter-spacing:0;}
+.setup-divider{height:1px;background:var(--brd);margin:2px 0;flex-shrink:0;}
+.setup-reset-btn{
+  background:var(--red);color:#fff;border:none;
+  font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:12px;border-radius:4px;cursor:pointer;width:100%;
+}
+.setup-done-btn{
+  background:var(--surf2);border:2px solid var(--brd2);color:var(--txt);
+  font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:12px;border-radius:4px;cursor:pointer;width:100%;
+}
 
 /* ===== DRAG & DROP — PILOT ASSIGNMENT ===== */
 .p-chip[data-slot]{cursor:pointer;transition:border-color .12s,background .12s,box-shadow .12s,transform .12s;}
@@ -398,15 +483,6 @@ button{cursor:pointer;border:none;background:none;}
     <div id="presets-scroll"></div>
   </div>
 
-  <!-- SETUP OVERLAY -->
-  <div id="setup-overlay">
-    <div class="setup-hdr">
-      <span class="setup-title">SETUP</span>
-      <button class="setup-close" onclick="closeSetup()">DONE</button>
-    </div>
-    <div id="setup-scroll"></div>
-  </div>
-
   <!-- TIME MODAL -->
   <div id="time-modal">
     <div class="tmodal-box">
@@ -416,6 +492,29 @@ button{cursor:pointer;border:none;background:none;}
         <button class="tmodal-cancel" onclick="closeTimeModal()">CANCEL</button>
         <button class="tmodal-ok" onclick="confirmTime()">SET</button>
       </div>
+    </div>
+  </div>
+
+  <!-- SETUP OVERLAY — bottom sheet -->
+  <div id="setup-overlay">
+    <div class="setup-backdrop" onclick="closeSetup()"></div>
+    <div class="setup-sheet">
+      <div class="setup-grip"></div>
+      <div class="setup-title">SETUP</div>
+      <div class="setup-row">
+        <span class="setup-row-label">APPEARANCE</span>
+        <button class="setup-toggle-btn" id="theme-btn" onclick="toggleTheme()">LIGHT MODE</button>
+      </div>
+      <div class="setup-row">
+        <span class="setup-row-label">AIRPORT</span>
+        <input type="text" class="setup-input" id="airport-input"
+               placeholder="ICAO or name" maxlength="24"
+               autocomplete="off" autocapitalize="characters"
+               oninput="S.airport=this.value.trim();save();">
+      </div>
+      <div class="setup-divider"></div>
+      <button class="setup-reset-btn" onclick="resetAll()">RESET ALL DATA</button>
+      <button class="setup-done-btn" onclick="closeSetup()">DONE</button>
     </div>
   </div>
 
@@ -449,7 +548,6 @@ const fullDate = () => {
 /* ======= STATE ======= */
 const S = {
   theme:'dark', mode:'aerotow',
-  airport:'',
   planes:[], pilots:[],
   comp:{
     tow:{plane:null,pilot:null},
@@ -462,6 +560,7 @@ const S = {
   landId:null, landSlot:null,
   logFilter:'', timeCb:null,
   utcMode: false,   // true = display times as UTC in the log
+  airport: '',      // set in Setup, printed on PDF
 };
 let Fs={fn:'glider',seats:1};
 let Qa={fn:'glider',seats:1}; // quick-add state in composer bottom
@@ -470,8 +569,9 @@ let Qa={fn:'glider',seats:1}; // quick-add state in composer bottom
 function save(){
   try{
     localStorage.setItem('gl5',JSON.stringify({
-      theme:S.theme,airport:S.airport,planes:S.planes,pilots:S.pilots,
-      log:S.log,airborne:S.airborne,takeoffs:S.takeoffs,
+      theme:S.theme, airport:S.airport,
+      planes:S.planes, pilots:S.pilots,
+      log:S.log, airborne:S.airborne, takeoffs:S.takeoffs,
       date:new Date().toDateString()
     }));
   }catch(e){}
@@ -492,8 +592,8 @@ function load(){
 /* ======= THEME ======= */
 function applyTheme(){
   document.body.setAttribute('data-theme',S.theme);
-  const btn=document.getElementById('setup-theme-btn');
-  if(btn) btn.textContent=S.theme==='dark'?'☀  SWITCH TO LIGHT MODE':'☾  SWITCH TO DARK MODE';
+  const btn=document.getElementById('theme-btn');
+  if(btn) btn.textContent=S.theme==='dark'?'LIGHT MODE':'DARK MODE';
 }
 function toggleTheme(){ S.theme=S.theme==='dark'?'light':'dark'; applyTheme(); save(); }
 
@@ -1074,7 +1174,6 @@ function renderBPlanes(){
 function renderBPilots(){
   const isP2=S.focus&&S.focus.sub==='p1';
   const label=isP2?'PILOT 2':'PILOT 1';
-  // Show which slot/plane this pilot is being assigned to
   const slot=S.focus?S.focus.slot:'';
   const plane=slot==='tow'?S.comp.tow.plane:slot==='glider'?S.comp.glider.plane:S.comp.single.plane;
   const planeHint=plane?` — ${plane.reg}`:'';
@@ -1083,18 +1182,24 @@ function renderBPilots(){
     <div class="add-new-plus">+</div>
     <div class="add-new-lbl">NEW</div>
   </div>`;
-  const dragHint=S.pilots.length?`<div class="drag-hint-bar">DRAG ↑ TO SLOT &nbsp;·&nbsp; OR TAP TO ASSIGN</div>`:'';
+  const dragHint=S.pilots.length?`<div class="drag-hint-bar">DRAG ↑ TO SLOT &nbsp;·&nbsp; TAP TO ASSIGN</div>`:'';
+  const soloBtn=isP2?`<div style="padding:4px 6px 0;flex-shrink:0;"><button class="btn-solo-full" onclick="skipP2()">SOLO — NO SECOND PILOT</button></div>`:'';
+  const scrollHint=S.pilots.length>3?`<div class="pilots-scroll-hint">← SCROLL FOR MORE →</div>`:'';
   return `<div style="display:flex;flex-direction:column;height:100%;">
     <div class="bottom-lbl">
       <span>SELECT ${label}${planeHint}</span>
-      ${isP2?`<span class="bottom-lbl-r" onclick="skipP2()">SOLO &#8594;</span>`:''}
     </div>
     ${dragHint}
-    <div class="sel-grid pilots-grid">${cards}${addCard}</div>
+    <div class="pilots-scroll-wrap">
+      <div class="pilots-grid">${cards}${addCard}</div>
+    </div>
+    ${scrollHint}
+    ${soloBtn}
     <div class="pilot-new-row">
-      <input type="text" class="pilot-text-in" id="new-pilot-in" placeholder="Type new name..." autocomplete="off" autocorrect="off" autocapitalize="words">
+      <input type="text" class="pilot-text-in" id="new-pilot-in"
+             placeholder="Tap here to type a new name..."
+             autocomplete="off" autocorrect="off" autocapitalize="words">
       <button class="pilot-add-btn" onclick="confirmNewPilot()">ADD</button>
-      ${isP2?`<button class="pilot-skip-btn" onclick="skipP2()">SOLO</button>`:''}
     </div>
   </div>`;
 }
@@ -1352,6 +1457,29 @@ function clearFilter(){ S.logFilter=''; document.getElementById('filter-sel').va
 function openLog(){ document.getElementById('log-overlay').classList.add('open'); updateFilterSel(); renderLog(); }
 function closeLog(){ document.getElementById('log-overlay').classList.remove('open'); }
 
+/* ======= SETUP ======= */
+function openSetup(){
+  const inp=document.getElementById('airport-input');
+  if(inp) inp.value=S.airport||'';
+  document.getElementById('setup-overlay').classList.add('open');
+}
+function closeSetup(){
+  document.getElementById('setup-overlay').classList.remove('open');
+}
+function resetAll(){
+  if(!confirm(
+    'RESET ALL DATA?\n\n' +
+    'This will permanently erase:\n' +
+    '  • All aircraft and pilot presets\n' +
+    '  • Today\'s complete flight log\n' +
+    '  • All currently airborne flights\n\n' +
+    'This cannot be undone.'
+  )) return;
+  S.planes=[]; S.pilots=[]; S.log=[]; S.airborne=[]; S.takeoffs=0;
+  // Preserve theme and airport — those are preferences, not flight data
+  save(); closeSetup(); resetComp(); renderAll();
+}
+
 /* ======= PRESETS ======= */
 function openPresets(){ document.getElementById('presets-overlay').classList.add('open'); renderPresets(); }
 function closePresets(){ document.getElementById('presets-overlay').classList.remove('open'); renderAll(); }
@@ -1457,53 +1585,6 @@ function addPilotPreset(){
 function delPlane(id){ S.planes=S.planes.filter(p=>p.id!==id); save(); renderPresets(); }
 function delPilot(i){ S.pilots.splice(i,1); save(); renderPresets(); }
 
-/* ======= SETUP OVERLAY ======= */
-function openSetup(){ document.getElementById('setup-overlay').classList.add('open'); renderSetup(); }
-function closeSetup(){ document.getElementById('setup-overlay').classList.remove('open'); }
-
-function renderSetup(){
-  const scr=document.getElementById('setup-scroll');
-  const ap=S.airport||'';
-  scr.innerHTML=`
-    <div class="ps-section">
-      <div class="ps-sec-hdr">APPEARANCE</div>
-      <button id="setup-theme-btn" class="setup-theme-btn" onclick="toggleTheme()">
-        ${S.theme==='dark'?'☀\u2002SWITCH TO LIGHT MODE':'☾\u2002SWITCH TO DARK MODE'}
-      </button>
-    </div>
-    <div class="ps-section">
-      <div class="ps-sec-hdr">AIRPORT</div>
-      <div class="add-form">
-        <div class="form-row">
-          <span class="form-lbl">ICAO</span>
-          <input class="form-in" id="setup-airport" placeholder="e.g. LKTB" autocomplete="off"
-            autocapitalize="characters" style="text-transform:uppercase;" value="${ap}">
-        </div>
-        <button class="form-submit" onclick="saveAirport()">SAVE AIRPORT</button>
-      </div>
-    </div>
-    <div class="ps-section">
-      <div class="ps-sec-hdr">DANGER ZONE</div>
-      <button class="setup-reset-btn" onclick="resetAll()">RESET ALL DATA</button>
-    </div>
-  `;
-  const ai=document.getElementById('setup-airport');
-  if(ai) ai.addEventListener('keydown',e=>{ if(e.key==='Enter') saveAirport(); });
-}
-
-function saveAirport(){
-  const v=(document.getElementById('setup-airport').value||'').trim().toUpperCase();
-  S.airport=v; save();
-  showToast(v?'AIRPORT SAVED: '+v:'AIRPORT CLEARED');
-}
-
-function resetAll(){
-  if(!confirm('Reset ALL presets and flight logs?\nThis cannot be undone.')) return;
-  S.planes=[]; S.pilots=[]; S.log=[]; S.airborne=[]; S.takeoffs=0; S.airport='';
-  save(); closeSetup(); renderAll();
-  showToast('ALL DATA CLEARED');
-}
-
 /* ======= TIME MODAL ======= */
 function openTimeModal(type){
   document.getElementById('tmodal-title').textContent=type==='takeoff'?'SET TAKEOFF TIME':'SET LANDING TIME';
@@ -1589,7 +1670,8 @@ tbody tr:last-child td{border-bottom:1.5px solid #aaa;}
 </style></head><body>
 <div class="hd">
   <h1>Šmírka Mobile &mdash; Flight Record</h1>
-  <div class="dt">Date: <b>${fullDate()}</b>${S.airport?` &nbsp;&middot;&nbsp; Airport: <b>${S.airport}</b>`:''}</div>
+  <div class="dt">Date: <b>${fullDate()}</b></div>
+  ${S.airport?`<div class="dt">Airport: <b>${S.airport}</b></div>`:''}
   ${filterNote}
 </div>
 <table>
@@ -1630,6 +1712,9 @@ function renderAll(){
 /* ======= INIT ======= */
 load(); applyTheme();
 document.getElementById('hdr-date').textContent=dateStr();
+// Populate Setup fields from persisted state
+const _airIn=document.getElementById('airport-input');
+if(_airIn) _airIn.value=S.airport||'';
 initSwipe();
 renderAll(); tickClock();
 setInterval(save,25000);
