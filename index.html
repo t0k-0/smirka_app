@@ -695,7 +695,6 @@ function selectPlaneById(id){
   else if(slot==='glider'){ S.comp.glider.plane=pl; S.comp.glider.pilots=[null,null]; S.focus={slot:'glider',sub:'p0'}; }
   else{ S.comp.single.plane=pl; S.comp.single.pilots=[null,null]; S.focus={slot:'single',sub:'p0'}; }
   S.bmode='pilots'; renderComp(); renderBottom();
-  setTimeout(()=>{ const el=document.getElementById('new-pilot-in'); if(el)el.focus(); },100);
 }
 
 function selectPilotByKey(el){ selectPilot(el.dataset.pilot); }
