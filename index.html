@@ -310,6 +310,94 @@ button{cursor:pointer;border:none;background:none;}
 /* Toast notification */
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 @keyframes toastOut{from{opacity:1}to{opacity:0}}
+
+/* ===== PILOTS — HORIZONTAL SCROLL STRIP ===== */
+.pilots-scroll-wrap{position:relative;flex:1;min-height:0;}
+/* Right-edge fade signals "more cards this way" */
+.pilots-scroll-wrap::after{
+  content:'';position:absolute;top:0;right:0;bottom:0;width:44px;
+  background:linear-gradient(to left,var(--bg) 20%,transparent 100%);
+  pointer-events:none;z-index:2;
+}
+.pilots-scroll-wrap::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:10px;
+  background:linear-gradient(to right,var(--bg),transparent);
+  pointer-events:none;z-index:2;
+}
+.pilots-grid{
+  display:flex;flex-direction:row;flex-wrap:nowrap;
+  overflow-x:auto;overflow-y:hidden;
+  gap:6px;padding:6px 8px;height:100%;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.pilots-grid::-webkit-scrollbar{display:none;}
+.pilots-grid .pilot-card{
+  flex-shrink:0;min-width:88px;max-width:155px;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+}
+.pilots-scroll-hint{
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--txt3);text-align:center;padding:2px 0;flex-shrink:0;
+}
+/* Unavailable pilot states */
+.pilot-unavail{opacity:.34;border-style:dashed!important;}
+.pilot-unavail-note{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);font-weight:700;}
+/* SOLO full-width green button */
+.btn-solo-full{
+  width:100%;background:var(--grn);color:#fff;
+  font-size:14px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  padding:10px;border-radius:3px;border:none;cursor:pointer;flex-shrink:0;
+}
+.btn-solo-full:active{opacity:.75;}
+
+/* ===== RECENT CONFIGURATIONS PANEL ===== */
+.recents-list{flex:1;overflow-y:auto;padding:5px;display:flex;flex-direction:column;gap:5px;}
+.rc-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;gap:6px;}
+.rc-empty-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--txt3);}
+.rc-empty-sub{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--txt3);opacity:.7;}
+
+.recent-card{
+  background:var(--surf);border:1px solid var(--brd);border-radius:4px;
+  padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;gap:5px;
+  transition:background .1s,border-color .1s;
+  -webkit-tap-highlight-color:transparent;
+}
+.recent-card:active{background:var(--surf2);}
+.recent-card.rc-partial{border-color:var(--brd2);border-style:dashed;}
+
+/* Mode badge inside a recent card */
+.rc-mode-badge{
+  font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:2px 7px;border-radius:2px;align-self:flex-start;
+}
+.rc-mode-badge.rc-aerotow{background:var(--tow-bg);color:var(--tow);border:1px solid var(--tow-brd);}
+.rc-mode-badge.rc-single{background:var(--gli-bg);color:var(--gli);border:1px solid var(--gli-brd);}
+
+/* Plane row inside a recent card */
+.rc-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;min-height:20px;}
+.rc-reg{font-family:'Share Tech Mono',monospace;font-size:13px;font-weight:700;letter-spacing:1px;}
+.rc-pilot{font-size:12px;color:var(--txt2);}
+.rc-unavail-item{opacity:.35;text-decoration:line-through;}
+.rc-abn-flag{
+  font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--red);background:rgba(221,17,17,.12);padding:1px 5px;border-radius:2px;
+  flex-shrink:0;
+}
+.rc-warn{
+  font-size:9px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--txt3);padding-top:2px;
+}
+.rc-ok-hint{
+  font-size:9px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--grn);font-weight:700;
+}
+
+/* Swipe hint in idle state */
+.idle-swipe-hint{
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--txt3);margin-top:3px;
+}
 </style>
 </head>
 <body data-theme="dark">
@@ -974,6 +1062,7 @@ function renderSingleSlot(){
 function renderBottom(){
   const el=document.getElementById('bottom-content');
   if(S.bmode==='idle')        el.innerHTML=renderBIdle();
+  else if(S.bmode==='recents')el.innerHTML=renderBRecents();
   else if(S.bmode==='planes') el.innerHTML=renderBPlanes();
   else if(S.bmode==='pilots') { el.innerHTML=renderBPilots(); bindPilotInput(); initPilotDrag(); }
   else if(S.bmode==='ready')  { el.innerHTML=renderBReady(); tickClock(); }
@@ -1140,10 +1229,115 @@ function dropPilotToSlot(dragName, targetSlot, targetSub){
   renderComp(); renderBottom();
 }
 
+function showRecents(){ S.bmode='recents'; renderBottom(); }
+
+/* ======= RECENT CONFIGURATIONS PANEL ======= */
+function renderBRecents(){
+  if(!S.recentConfigs.length){
+    return `<div class="bottom-idle">
+      <div class="rc-empty">
+        <div class="rc-empty-title">NO RECENT CONFIGURATIONS</div>
+        <div class="rc-empty-sub">LOG A FLIGHT TO BUILD HISTORY</div>
+        <button class="hdr-btn" style="margin-top:8px;" onclick="S.bmode='idle';renderBottom()">&#8592; BACK</button>
+      </div>
+    </div>`;
+  }
+
+  const abnPilots=getAirbornePilots();
+  const abnRegs=getAirbornePlaneRegs();
+
+  const cards=S.recentConfigs.map((cfg,i)=>{
+    let skipCount=0;
+
+    function planeRow(plane, pilots, fnClass){
+      const isAbn=abnRegs.has(plane.reg);
+      const exists=!!S.planes.find(p=>p.reg===plane.reg);
+      const planeUnavail=isAbn||!exists;
+      if(planeUnavail) skipCount++;
+      const piCells=pilots.filter(Boolean).map(p=>{
+        const pAbn=abnPilots.has(p);
+        if(pAbn) skipCount++;
+        return `<span class="rc-pilot${pAbn?' rc-unavail-item':''}">${p}${pAbn?' ✗':''}</span>`;
+      }).join('');
+      return `<div class="rc-row">
+        <span class="fn-badge ${fnClass}" style="font-size:8px;padding:1px 5px;">${fnClass==='glider'?'GLI':fnClass.toUpperCase().slice(0,3)}</span>
+        <span class="rc-reg${planeUnavail?' rc-unavail-item':''}">${plane.reg}</span>
+        <span style="font-size:11px;color:var(--txt3);">${plane.type}</span>
+        ${piCells}
+        ${isAbn?`<span class="rc-abn-flag">AIRBORNE</span>`:''}
+        ${!isAbn&&!exists?`<span class="rc-abn-flag" style="color:var(--txt2);">NOT IN PRESETS</span>`:''}
+      </div>`;
+    }
+
+    let rows='';
+    if(cfg.mode==='aerotow'){
+      rows += planeRow(cfg.tow.plane,   [cfg.tow.pilot],       'tow');
+      rows += planeRow(cfg.glider.plane, cfg.glider.pilots,    cfg.glider.plane.fn||'glider');
+    } else {
+      rows += planeRow(cfg.single.plane, cfg.single.pilots,    cfg.single.plane.fn||'glider');
+    }
+
+    const isPartial=skipCount>0;
+    const statusLine=isPartial
+      ? `<div class="rc-warn">${skipCount} ITEM${skipCount>1?'S':''} UNAVAILABLE — WILL BE LEFT EMPTY</div>`
+      : `<div class="rc-ok-hint">&#10003; READY TO LOAD</div>`;
+
+    return `<div class="recent-card${isPartial?' rc-partial':''}" onclick="loadRecentConfig(${i})">
+      <div class="rc-mode-badge rc-${cfg.mode}">${cfg.mode==='aerotow'?'AEROTOW':'SINGLE'}</div>
+      ${rows}
+      ${statusLine}
+    </div>`;
+  }).join('');
+
+  return `<div style="display:flex;flex-direction:column;height:100%;">
+    <div class="bottom-lbl">
+      <span>RECENT CONFIGS</span>
+      <span class="bottom-lbl-r" onclick="S.bmode='idle';renderBottom()">&#8592; BACK</span>
+    </div>
+    <div class="recents-list">${cards}</div>
+  </div>`;
+}
+
+/* ======= BOTTOM PANEL SWIPE — idle ↔ recents ======= */
+function initBottomSwipe(){
+  const panel=document.getElementById('bottom-panel');
+  let sx=null,sy=null,st=null;
+  panel.addEventListener('touchstart',e=>{
+    if(e.touches.length!==1) return;
+    if(S.bmode!=='idle'&&S.bmode!=='recents') return;
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY; st=Date.now();
+  },{passive:true});
+  panel.addEventListener('touchend',e=>{
+    if(sx===null) return;
+    if(S.bmode!=='idle'&&S.bmode!=='recents'){sx=null;return;}
+    const dx=e.changedTouches[0].clientX-sx;
+    const dy=e.changedTouches[0].clientY-sy;
+    const dt=Date.now()-st;
+    const skip=e.target.closest('button,input,select');
+    if(!skip && Math.abs(dx)>Math.abs(dy)*1.4 && Math.abs(dx)>52 && dt<420){
+      if(dx<0 && S.bmode==='idle'){
+        // Swipe LEFT → show recents  (mirror of composer's left=single convention)
+        showRecents();
+      } else if(dx>0 && S.bmode==='recents'){
+        // Swipe RIGHT → back to idle
+        S.bmode='idle'; renderBottom();
+      }
+    }
+    sx=null; sy=null; st=null;
+  },{passive:true});
+}
+
 function renderBIdle(){
+  const hasRecents=S.recentConfigs.length>0;
   return `<div class="bottom-idle">
     <div class="idle-hint">TAP A SLOT ABOVE TO BEGIN</div>
-    <button class="hdr-btn" style="margin-top:6px;" onclick="openPresets()">MANAGE PRESETS</button>
+    ${hasRecents
+      ?`<div class="idle-swipe-hint">&#8594; SWIPE FOR RECENT CONFIGS</div>`
+      :`<div class="idle-swipe-hint">LOG A FLIGHT TO BUILD HISTORY</div>`}
+    <div style="display:flex;gap:6px;margin-top:7px;">
+      <button class="hdr-btn" onclick="openPresets()">PRESETS</button>
+      ${hasRecents?`<button class="hdr-btn" style="background:var(--surf2);border-color:var(--brd2);" onclick="showRecents()">RECENTS &#8594;</button>`:''}
+    </div>
   </div>`;
 }
 
@@ -1699,6 +1893,7 @@ function renderAll(){
 load(); applyTheme();
 document.getElementById('hdr-date').textContent=dateStr();
 initSwipe();
+initBottomSwipe();
 renderAll(); tickClock();
 setInterval(save,25000);
 
