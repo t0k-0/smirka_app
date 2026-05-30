@@ -267,114 +267,19 @@ button{cursor:pointer;border:none;background:none;}
 .form-submit{background:var(--acc);color:#fff;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px;border-radius:3px;width:100%;}
 
 /* ===== TIME MODAL ===== */
-#time-modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:400;display:none;align-items:center;justify-content:center;padding:20px;}
+#time-modal{position:fixed;inset:0;background:rgba(0,0,0,.84);z-index:400;display:none;align-items:center;justify-content:center;}
 #time-modal.open{display:flex;}
-.tmodal-box{background:var(--surf);border:2px solid var(--brd2);border-radius:8px;padding:20px 16px;width:100%;max-width:300px;display:flex;flex-direction:column;gap:12px;box-shadow:0 24px 60px rgba(0,0,0,.7);}
-.tmodal-title{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--txt2);text-align:center;}
-.tmodal-in{background:var(--surf2);border:2px solid var(--brd2);border-radius:4px;color:var(--txt);font-family:'Share Tech Mono',monospace;font-size:clamp(26px,8vw,40px);font-weight:600;padding:10px 8px;text-align:center;outline:none;width:100%;letter-spacing:3px;}
+.tmodal-box{background:var(--surf);border:2px solid var(--brd2);border-radius:6px;padding:18px;width:260px;display:flex;flex-direction:column;gap:10px;}
+.tmodal-title{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--txt2);}
+.tmodal-in{background:var(--surf2);border:2px solid var(--brd2);border-radius:3px;color:var(--txt);font-family:'Share Tech Mono',monospace;font-size:36px;font-weight:600;padding:8px;text-align:center;outline:none;width:100%;letter-spacing:4px;}
 .tmodal-in:focus{border-color:var(--acc);}
-.tmodal-btns{display:flex;gap:8px;}
-.tmodal-cancel{flex:1;background:var(--surf2);border:1px solid var(--brd);color:var(--txt);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:11px;border-radius:4px;}
-.tmodal-ok{flex:1;background:var(--acc);color:#fff;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:11px;border-radius:4px;}
+.tmodal-btns{display:flex;gap:7px;}
+.tmodal-cancel{flex:1;background:var(--surf2);border:1px solid var(--brd);color:var(--txt);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px;border-radius:3px;}
+.tmodal-ok{flex:1;background:var(--acc);color:#fff;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px;border-radius:3px;}
 
 ::-webkit-scrollbar{width:3px;height:3px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px;}
-
-/* ===== PILOT HORIZONTAL SCROLL STRIP ===== */
-/* Wrapper provides the right-edge fade "handle" hinting more cards */
-.pilots-scroll-wrap{position:relative;flex:1;min-height:0;}
-.pilots-scroll-wrap::before{
-  content:'';position:absolute;top:0;left:0;bottom:0;width:10px;
-  background:linear-gradient(to right,var(--bg),transparent);
-  pointer-events:none;z-index:2;
-}
-.pilots-scroll-wrap::after{
-  content:'';position:absolute;top:0;right:0;bottom:0;width:48px;
-  background:linear-gradient(to left,var(--bg) 30%,transparent 100%);
-  pointer-events:none;z-index:2;
-}
-.pilots-grid{
-  display:flex;flex-direction:row;flex-wrap:nowrap;
-  overflow-x:auto;overflow-y:hidden;
-  gap:7px;padding:7px 10px;
-  height:100%;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-}
-.pilots-grid::-webkit-scrollbar{display:none;}
-/* Each pilot card: fixed-height pill in the horizontal strip */
-.pilots-grid .pilot-card{
-  flex-shrink:0;
-  min-width:90px;max-width:160px;
-  height:100%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  font-size:14px;
-}
-/* Scroll hint text below strip */
-.pilots-scroll-hint{
-  font-size:8px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--txt3);text-align:center;padding:2px 0;flex-shrink:0;
-}
-/* Greyed-out unavailable states */
-.pilot-unavail{opacity:.35;border-style:dashed;}
-.pilot-unavail-note{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--red);font-weight:700;margin-top:1px;}
-/* Big green SOLO full-width button */
-.btn-solo-full{
-  width:100%;background:var(--grn);color:#fff;
-  font-size:14px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
-  padding:11px;border-radius:3px;border:none;cursor:pointer;flex-shrink:0;
-}
-.btn-solo-full:active{opacity:.75;}
-
-/* ===== SETUP OVERLAY (bottom sheet) ===== */
-#setup-overlay{
-  position:fixed;inset:0;z-index:300;
-  display:flex;align-items:flex-end;
-  pointer-events:none;opacity:0;
-  transition:opacity .22s;
-}
-#setup-overlay.open{pointer-events:all;opacity:1;}
-.setup-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.65);}
-.setup-sheet{
-  position:relative;width:100%;
-  background:var(--surf);border:2px solid var(--brd2);border-bottom:none;
-  border-radius:14px 14px 0 0;
-  padding:10px 16px 32px;
-  transform:translateY(102%);
-  transition:transform .28s cubic-bezier(.3,0,.2,1);
-  display:flex;flex-direction:column;gap:12px;
-}
-#setup-overlay.open .setup-sheet{transform:translateY(0);}
-/* Drag handle pill */
-.setup-grip{width:40px;height:4px;background:var(--brd2);border-radius:2px;margin:0 auto 6px;flex-shrink:0;}
-.setup-title{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
-  color:var(--txt2);text-align:center;flex-shrink:0;}
-.setup-row{display:flex;align-items:center;gap:10px;min-height:44px;}
-.setup-row-label{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--txt2);flex:1;}
-.setup-toggle-btn{background:var(--surf2);border:1px solid var(--brd2);color:var(--txt);
-  font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  padding:8px 16px;border-radius:3px;flex-shrink:0;white-space:nowrap;}
-.setup-input{
-  flex:1;background:var(--surf2);border:1px solid var(--brd2);border-radius:3px;
-  color:var(--txt);font-family:'Share Tech Mono',monospace;font-size:16px;font-weight:600;
-  padding:8px 10px;outline:none;letter-spacing:1px;text-transform:uppercase;min-width:0;
-}
-.setup-input:focus{border-color:var(--acc);}
-.setup-input::placeholder{color:var(--txt3);font-family:'Barlow Condensed',sans-serif;
-  font-size:14px;text-transform:none;letter-spacing:0;}
-.setup-divider{height:1px;background:var(--brd);margin:2px 0;flex-shrink:0;}
-.setup-reset-btn{
-  background:var(--red);color:#fff;border:none;
-  font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  padding:12px;border-radius:4px;cursor:pointer;width:100%;
-}
-.setup-done-btn{
-  background:var(--surf2);border:2px solid var(--brd2);color:var(--txt);
-  font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  padding:12px;border-radius:4px;cursor:pointer;width:100%;
-}
 
 /* ===== DRAG & DROP — PILOT ASSIGNMENT ===== */
 .p-chip[data-slot]{cursor:pointer;transition:border-color .12s,background .12s,box-shadow .12s,transform .12s;}
@@ -417,7 +322,7 @@ button{cursor:pointer;border:none;background:none;}
     </div>
     <span class="date-str" id="hdr-date"></span>
     <div class="hdr-btns">
-      <button class="hdr-btn" onclick="openSetup()">SETUP</button>
+      <button class="hdr-btn" id="theme-btn" onclick="toggleTheme()">LIGHT</button>
       <button class="hdr-btn" onclick="openPresets()">+ PRESETS</button>
     </div>
   </div>
@@ -495,29 +400,6 @@ button{cursor:pointer;border:none;background:none;}
     </div>
   </div>
 
-  <!-- SETUP OVERLAY — bottom sheet -->
-  <div id="setup-overlay">
-    <div class="setup-backdrop" onclick="closeSetup()"></div>
-    <div class="setup-sheet">
-      <div class="setup-grip"></div>
-      <div class="setup-title">SETUP</div>
-      <div class="setup-row">
-        <span class="setup-row-label">APPEARANCE</span>
-        <button class="setup-toggle-btn" id="theme-btn" onclick="toggleTheme()">LIGHT MODE</button>
-      </div>
-      <div class="setup-row">
-        <span class="setup-row-label">AIRPORT</span>
-        <input type="text" class="setup-input" id="airport-input"
-               placeholder="ICAO or name" maxlength="24"
-               autocomplete="off" autocapitalize="characters"
-               oninput="S.airport=this.value.trim();save();">
-      </div>
-      <div class="setup-divider"></div>
-      <button class="setup-reset-btn" onclick="resetAll()">RESET ALL DATA</button>
-      <button class="setup-done-btn" onclick="closeSetup()">DONE</button>
-    </div>
-  </div>
-
 </div>
 <script>
 /* ======= UTILS ======= */
@@ -559,8 +441,9 @@ const S = {
   airborne:[], log:[], takeoffs:0,
   landId:null, landSlot:null,
   logFilter:'', timeCb:null,
-  utcMode: false,   // true = display times as UTC in the log
-  airport: '',      // set in Setup, printed on PDF
+  utcMode: false,
+  airport: '',
+  recentConfigs: [],  // up to 5 most-recent takeoff configurations
 };
 let Fs={fn:'glider',seats:1};
 let Qa={fn:'glider',seats:1}; // quick-add state in composer bottom
@@ -572,6 +455,7 @@ function save(){
       theme:S.theme, airport:S.airport,
       planes:S.planes, pilots:S.pilots,
       log:S.log, airborne:S.airborne, takeoffs:S.takeoffs,
+      recentConfigs:S.recentConfigs,
       date:new Date().toDateString()
     }));
   }catch(e){}
@@ -583,6 +467,7 @@ function load(){
     S.theme=d.theme||'dark';
     S.airport=d.airport||'';
     S.planes=d.planes||[]; S.pilots=d.pilots||[];
+    S.recentConfigs=d.recentConfigs||[];
     if(d.date===new Date().toDateString()){
       S.log=d.log||[]; S.airborne=d.airborne||[]; S.takeoffs=d.takeoffs||0;
     }
@@ -592,8 +477,7 @@ function load(){
 /* ======= THEME ======= */
 function applyTheme(){
   document.body.setAttribute('data-theme',S.theme);
-  const btn=document.getElementById('theme-btn');
-  if(btn) btn.textContent=S.theme==='dark'?'LIGHT MODE':'DARK MODE';
+  document.getElementById('theme-btn').textContent=S.theme==='dark'?'LIGHT':'DARK';
 }
 function toggleTheme(){ S.theme=S.theme==='dark'?'light':'dark'; applyTheme(); save(); }
 
@@ -695,16 +579,123 @@ function selectPlaneById(id){
   else if(slot==='glider'){ S.comp.glider.plane=pl; S.comp.glider.pilots=[null,null]; S.focus={slot:'glider',sub:'p0'}; }
   else{ S.comp.single.plane=pl; S.comp.single.pilots=[null,null]; S.focus={slot:'single',sub:'p0'}; }
   S.bmode='pilots'; renderComp(); renderBottom();
+  setTimeout(()=>{ const el=document.getElementById('new-pilot-in'); if(el)el.focus(); },100);
+}
+
+/* ======= AIRBORNE / COMPOSER HELPERS ======= */
+
+/* Pilot names currently in the air (not yet landed) */
+function getAirbornePilots(){
+  const s=new Set();
+  S.airborne.forEach(en=>{
+    if(en.type==='aerotow'){
+      if(!en.tow.ldgTime   && en.tow.pilot)               s.add(en.tow.pilot);
+      if(!en.glider.ldgTime) en.glider.pilots.filter(Boolean).forEach(p=>s.add(p));
+    } else {
+      if(!en.ldgTime) en.pilots.filter(Boolean).forEach(p=>s.add(p));
+    }
+  });
+  return s;
+}
+
+/* Plane registrations currently airborne */
+function getAirbornePlaneRegs(){
+  const s=new Set();
+  S.airborne.forEach(en=>{
+    if(en.type==='aerotow'){
+      if(!en.tow.ldgTime)    s.add(en.tow.plane.reg);
+      if(!en.glider.ldgTime) s.add(en.glider.plane.reg);
+    } else {
+      if(!en.ldgTime) s.add(en.plane.reg);
+    }
+  });
+  return s;
+}
+
+/* Pilots already in the current composition, EXCEPT the slot being filled right now */
+function getComposerPilotsExcludingCurrent(){
+  const focus=S.focus||{};
+  const s=new Set();
+  if(focus.slot!=='tow' && S.comp.tow.pilot) s.add(S.comp.tow.pilot);
+  S.comp.glider.pilots.forEach((p,i)=>{
+    if(p && !(focus.slot==='glider' && focus.sub===(i===0?'p0':'p1'))) s.add(p);
+  });
+  S.comp.single.pilots.forEach((p,i)=>{
+    if(p && !(focus.slot==='single' && focus.sub===(i===0?'p0':'p1'))) s.add(p);
+  });
+  return s;
+}
+
+/* ======= RECENT CONFIGS ======= */
+
+/* Snapshot the current comp state (called just before logTakeoff resets everything) */
+function saveRecentConfig(){
+  const cfg={id:uid(), ts:Date.now(), mode:S.mode};
+  if(S.mode==='aerotow'){
+    cfg.tow   ={plane:{...S.comp.tow.plane},   pilot:S.comp.tow.pilot};
+    cfg.glider={plane:{...S.comp.glider.plane}, pilots:[...S.comp.glider.pilots]};
+  } else {
+    cfg.single={plane:{...S.comp.single.plane}, pilots:[...S.comp.single.pilots]};
+  }
+  S.recentConfigs.unshift(cfg);
+  if(S.recentConfigs.length>5) S.recentConfigs.length=5;
+}
+
+/* Load a stored config back into the composer, skipping airborne planes/pilots */
+function loadRecentConfig(idx){
+  const cfg=S.recentConfigs[idx]; if(!cfg)return;
+  const abnPilots=getAirbornePilots();
+  const abnRegs=getAirbornePlaneRegs();
+
+  // Switch mode
+  S.mode=cfg.mode;
+  document.getElementById('mb-aerotow').classList.toggle('active',cfg.mode==='aerotow');
+  document.getElementById('mb-single').classList.toggle('active',cfg.mode==='single');
+  resetComp();
+
+  if(cfg.mode==='aerotow'){
+    const towPl =S.planes.find(p=>p.reg===cfg.tow.plane.reg);
+    if(towPl && !abnRegs.has(towPl.reg)){
+      S.comp.tow.plane=towPl;
+      if(cfg.tow.pilot && !abnPilots.has(cfg.tow.pilot))
+        S.comp.tow.pilot=cfg.tow.pilot;
+    }
+    const gliPl=S.planes.find(p=>p.reg===cfg.glider.plane.reg);
+    if(gliPl && !abnRegs.has(gliPl.reg)){
+      S.comp.glider.plane=gliPl;
+      cfg.glider.pilots.forEach((p,i)=>{
+        if(p && !abnPilots.has(p)) S.comp.glider.pilots[i]=p;
+      });
+    }
+  } else {
+    const sPl=S.planes.find(p=>p.reg===cfg.single.plane.reg);
+    if(sPl && !abnRegs.has(sPl.reg)){
+      S.comp.single.plane=sPl;
+      cfg.single.pilots.forEach((p,i)=>{
+        if(p && !abnPilots.has(p)) S.comp.single.pilots[i]=p;
+      });
+    }
+  }
+
+  // Move composer to next logical state
+  S.bmode='idle';
+  if(isReady()){ S.focus=null; S.bmode='ready'; }
+  else advReady();
+
+  renderComp('sl'); renderBottom();
 }
 
 function selectPilotByKey(el){ selectPilot(el.dataset.pilot); }
 
 function selectPilot(name){
-  // Block: pilot already assigned to another slot in this same takeoff
+  // Hard block: pilot already in this same takeoff
   const composerPilots=getComposerPilotsExcludingCurrent();
   if(composerPilots.has(name)){
-    showToast('ALREADY IN THIS TAKEOFF');
-    return;
+    showToast('ALREADY IN THIS TAKEOFF'); return;
+  }
+  // Hard block: pilot is currently airborne — cannot fly two planes simultaneously
+  if(getAirbornePilots().has(name)){
+    showToast(name.split(' ')[0].toUpperCase()+' IS AIRBORNE'); return;
   }
   const {slot,sub}=S.focus;
   if(slot==='tow'){
@@ -842,6 +833,7 @@ function logTakeoff(t){
       plane:{...S.comp.single.plane},pilots:[...S.comp.single.pilots],ldgTime:null,dur:null
     });
   }
+  saveRecentConfig();   // snapshot before reset
   resetComp(); save(); renderAll();
 }
 
@@ -1134,6 +1126,10 @@ function dropPilotToSlot(dragName, targetSlot, targetSub){
   if(occupied.has(dragName)){
     showToast('ALREADY IN THIS TAKEOFF'); return;
   }
+  // Hard block: pilot is airborne — cannot be re-used while still in the air
+  if(getAirbornePilots().has(dragName)){
+    showToast(dragName.split(' ')[0].toUpperCase()+' IS AIRBORNE'); return;
+  }
 
   // Normal assign
   if(targetSlot==='tow')          S.comp.tow.pilot=dragName;
@@ -1176,27 +1172,42 @@ function renderBPilots(){
   const slot=S.focus?S.focus.slot:'';
   const plane=slot==='tow'?S.comp.tow.plane:slot==='glider'?S.comp.glider.plane:S.comp.single.plane;
   const planeHint=plane?` — ${plane.reg}`:'';
-  const cards=S.pilots.map(p=>`<div class="pilot-card" data-pilot="${p.replace(/"/g,'&quot;')}" onclick="selectPilotByKey(this)">${p}</div>`).join('');
+
+  const abnPilots=getAirbornePilots();
+  const compPilots=getComposerPilotsExcludingCurrent();
+
+  const cards=S.pilots.map(p=>{
+    const isAbn=abnPilots.has(p);
+    const inComp=compPilots.has(p);
+    const blocked=isAbn||inComp;
+    const note=isAbn?'AIRBORNE':inComp?'IN USE':'';
+    return `<div class="pilot-card${blocked?' pilot-unavail':''}"
+      data-pilot="${p.replace(/"/g,'&quot;')}"
+      onclick="selectPilotByKey(this)"
+      style="${blocked?'pointer-events:none;':''}">
+      <span>${p}</span>
+      ${note?`<span class="pilot-unavail-note">${note}</span>`:''}
+    </div>`;
+  }).join('');
+
   const addCard=`<div class="pilot-card add-new" onclick="focusNewPilot()">
     <div class="add-new-plus">+</div>
     <div class="add-new-lbl">NEW</div>
   </div>`;
   const dragHint=S.pilots.length?`<div class="drag-hint-bar">DRAG ↑ TO SLOT &nbsp;·&nbsp; TAP TO ASSIGN</div>`:'';
   const soloBtn=isP2?`<div style="padding:4px 6px 0;flex-shrink:0;"><button class="btn-solo-full" onclick="skipP2()">SOLO — NO SECOND PILOT</button></div>`:'';
-  const scrollHint=S.pilots.length>3?`<div class="pilots-scroll-hint">← SCROLL FOR MORE →</div>`:'';
+  const scrollHint=S.pilots.length>3?`<div class="pilots-scroll-hint">← SCROLL →</div>`:'';
+
   return `<div style="display:flex;flex-direction:column;height:100%;">
-    <div class="bottom-lbl">
-      <span>SELECT ${label}${planeHint}</span>
-    </div>
+    <div class="bottom-lbl"><span>SELECT ${label}${planeHint}</span></div>
     ${dragHint}
     <div class="pilots-scroll-wrap">
       <div class="pilots-grid">${cards}${addCard}</div>
     </div>
-    ${scrollHint}
-    ${soloBtn}
+    ${scrollHint}${soloBtn}
     <div class="pilot-new-row">
       <input type="text" class="pilot-text-in" id="new-pilot-in"
-             placeholder="Tap here to type a new name..."
+             placeholder="Tap to type a new name..."
              autocomplete="off" autocorrect="off" autocapitalize="words">
       <button class="pilot-add-btn" onclick="confirmNewPilot()">ADD</button>
     </div>
@@ -1456,29 +1467,6 @@ function clearFilter(){ S.logFilter=''; document.getElementById('filter-sel').va
 function openLog(){ document.getElementById('log-overlay').classList.add('open'); updateFilterSel(); renderLog(); }
 function closeLog(){ document.getElementById('log-overlay').classList.remove('open'); }
 
-/* ======= SETUP ======= */
-function openSetup(){
-  const inp=document.getElementById('airport-input');
-  if(inp) inp.value=S.airport||'';
-  document.getElementById('setup-overlay').classList.add('open');
-}
-function closeSetup(){
-  document.getElementById('setup-overlay').classList.remove('open');
-}
-function resetAll(){
-  if(!confirm(
-    'RESET ALL DATA?\n\n' +
-    'This will permanently erase:\n' +
-    '  • All aircraft and pilot presets\n' +
-    '  • Today\'s complete flight log\n' +
-    '  • All currently airborne flights\n\n' +
-    'This cannot be undone.'
-  )) return;
-  S.planes=[]; S.pilots=[]; S.log=[]; S.airborne=[]; S.takeoffs=0;
-  // Preserve theme and airport — those are preferences, not flight data
-  save(); closeSetup(); resetComp(); renderAll();
-}
-
 /* ======= PRESETS ======= */
 function openPresets(){ document.getElementById('presets-overlay').classList.add('open'); renderPresets(); }
 function closePresets(){ document.getElementById('presets-overlay').classList.remove('open'); renderAll(); }
@@ -1670,7 +1658,6 @@ tbody tr:last-child td{border-bottom:1.5px solid #aaa;}
 <div class="hd">
   <h1>Šmírka Mobile &mdash; Flight Record</h1>
   <div class="dt">Date: <b>${fullDate()}</b></div>
-  ${S.airport?`<div class="dt">Airport: <b>${S.airport}</b></div>`:''}
   ${filterNote}
 </div>
 <table>
@@ -1711,9 +1698,6 @@ function renderAll(){
 /* ======= INIT ======= */
 load(); applyTheme();
 document.getElementById('hdr-date').textContent=dateStr();
-// Populate Setup fields from persisted state
-const _airIn=document.getElementById('airport-input');
-if(_airIn) _airIn.value=S.airport||'';
 initSwipe();
 renderAll(); tickClock();
 setInterval(save,25000);
