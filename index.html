@@ -393,8 +393,31 @@ button{cursor:pointer;border:none;background:none;}
   color:var(--grn);font-weight:700;
 }
 
-/* Swipe hint in idle state */
-.idle-swipe-hint{
+/* ===== SETUP OVERLAY ===== */
+#setup-overlay{position:fixed;inset:0;background:var(--bg);z-index:250;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .28s cubic-bezier(.3,0,.2,1);}
+#setup-overlay.open{transform:translateX(0);}
+.setup-hdr{height:46px;background:var(--surf);border-bottom:2px solid var(--brd2);display:flex;align-items:center;padding:0 10px;gap:8px;flex-shrink:0;}
+.setup-title{font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;flex:1;}
+.setup-close{background:var(--acc);border:1px solid var(--acc);color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:2px;}
+.setup-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:18px;}
+.setup-section{display:flex;flex-direction:column;gap:7px;}
+.setup-sec-hdr{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--txt2);padding-bottom:5px;border-bottom:1px solid var(--brd);}
+.setup-row-btn{background:var(--surf);border:1px solid var(--brd2);color:var(--txt);font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:12px 14px;border-radius:3px;text-align:left;width:100%;}
+.setup-row-btn:active{opacity:.65;}
+.setup-danger-soft{border-color:var(--tow-brd);color:var(--tow);}
+.setup-danger{background:rgba(221,17,17,.08);border-color:rgba(221,17,17,.4);color:var(--red);}
+.setup-hint{font-size:10px;letter-spacing:1px;color:var(--txt3);text-transform:uppercase;padding:0 2px;}
+.setup-field-row{display:flex;gap:6px;}
+.setup-text-in{flex:1;background:var(--surf);border:2px solid var(--brd2);border-radius:3px;color:var(--txt);font-family:'Share Tech Mono',monospace;font-size:16px;font-weight:600;padding:10px 12px;outline:none;letter-spacing:1px;}
+.setup-text-in:focus{border-color:var(--acc);}
+.setup-text-in::placeholder{color:var(--txt3);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:400;letter-spacing:.5px;text-transform:none;}
+/* DELETE button in log rows */
+.log-del-td{cursor:pointer;text-align:center;color:var(--txt3);font-size:13px;padding:5px 6px;transition:color .1s;}
+.log-del-td:active{color:var(--red);}
+@media(hover:hover){.log-del-td:hover{color:var(--red);}}
+/* New-pilot input locked state */
+.pilot-text-in.locked{color:var(--txt3);cursor:pointer;background:var(--surf2);border-style:dashed;}
+
   font-size:9px;letter-spacing:2px;text-transform:uppercase;
   color:var(--txt3);margin-top:3px;
 }
@@ -410,7 +433,7 @@ button{cursor:pointer;border:none;background:none;}
     </div>
     <span class="date-str" id="hdr-date"></span>
     <div class="hdr-btns">
-      <button class="hdr-btn" id="theme-btn" onclick="toggleTheme()">LIGHT</button>
+      <button class="hdr-btn" onclick="openSetup()">&#9881; SETUP</button>
       <button class="hdr-btn" onclick="openPresets()">+ PRESETS</button>
     </div>
   </div>
@@ -459,7 +482,7 @@ button{cursor:pointer;border:none;background:none;}
         <thead><tr>
           <th>#</th><th>AC TYPE</th><th>REG</th>
           <th>PILOT 1</th><th>PILOT 2</th>
-          <th>T/O</th><th>LDG</th><th>DUR</th><th>NOTE</th>
+          <th>T/O</th><th>LDG</th><th>DUR</th><th>NOTE</th><th></th>
         </tr></thead>
         <tbody id="log-tbody"></tbody>
       </table>
@@ -476,7 +499,41 @@ button{cursor:pointer;border:none;background:none;}
     <div id="presets-scroll"></div>
   </div>
 
-  <!-- TIME MODAL -->
+  <!-- SETUP OVERLAY -->
+  <div id="setup-overlay">
+    <div class="setup-hdr">
+      <span class="setup-title">SETUP</span>
+      <button class="setup-close" onclick="closeSetup()">DONE</button>
+    </div>
+    <div class="setup-body">
+      <div class="setup-section">
+        <div class="setup-sec-hdr">DISPLAY</div>
+        <button class="setup-row-btn" id="setup-theme-btn" onclick="setupToggleTheme()">☀ LIGHT MODE</button>
+      </div>
+      <div class="setup-section">
+        <div class="setup-sec-hdr">AIRFIELD</div>
+        <div class="setup-field-row">
+          <input type="text" class="setup-text-in" id="setup-airfield"
+                 placeholder="e.g. LKVO — Vokovice"
+                 autocomplete="off" autocapitalize="characters"
+                 style="text-transform:uppercase;">
+        </div>
+        <div class="setup-hint">Appears in the PDF export header</div>
+      </div>
+      <div class="setup-section">
+        <div class="setup-sec-hdr">LOG</div>
+        <button class="setup-row-btn setup-danger-soft" onclick="confirmClearLog()">CLEAR FLIGHT LOG</button>
+        <div class="setup-hint">Removes all logged flights for today</div>
+      </div>
+      <div class="setup-section">
+        <div class="setup-sec-hdr">DATA</div>
+        <button class="setup-row-btn setup-danger" onclick="confirmResetAll()">&#9888; RESET ALL MEMORY</button>
+        <div class="setup-hint">Erases all planes, pilots, flights, and settings</div>
+      </div>
+    </div>
+  </div>
+
+
   <div id="time-modal">
     <div class="tmodal-box">
       <div class="tmodal-title" id="tmodal-title">SET TIME</div>
@@ -565,9 +622,72 @@ function load(){
 /* ======= THEME ======= */
 function applyTheme(){
   document.body.setAttribute('data-theme',S.theme);
-  document.getElementById('theme-btn').textContent=S.theme==='dark'?'LIGHT':'DARK';
+  // Update setup overlay theme button if open
+  const tb=document.getElementById('setup-theme-btn');
+  if(tb) tb.textContent=S.theme==='dark'?'☀ LIGHT MODE':'☾ DARK MODE';
 }
 function toggleTheme(){ S.theme=S.theme==='dark'?'light':'dark'; applyTheme(); save(); }
+
+/* ======= SETUP OVERLAY ======= */
+function openSetup(){
+  const ov=document.getElementById('setup-overlay');
+  ov.classList.add('open');
+  // Sync airfield field
+  const af=document.getElementById('setup-airfield');
+  if(af) af.value=S.airport||'';
+  // Sync theme button label
+  const tb=document.getElementById('setup-theme-btn');
+  if(tb) tb.textContent=S.theme==='dark'?'☀ LIGHT MODE':'☾ DARK MODE';
+}
+
+function closeSetup(){
+  // Persist airfield before closing
+  const af=document.getElementById('setup-airfield');
+  if(af){ S.airport=(af.value||'').trim().toUpperCase(); save(); }
+  document.getElementById('setup-overlay').classList.remove('open');
+}
+
+function setupToggleTheme(){
+  S.theme=S.theme==='dark'?'light':'dark';
+  applyTheme(); save();
+  const tb=document.getElementById('setup-theme-btn');
+  if(tb) tb.textContent=S.theme==='dark'?'☀ LIGHT MODE':'☾ DARK MODE';
+}
+
+function confirmResetAll(){
+  if(!confirm('RESET ALL DATA?\n\nThis will permanently erase all planes, pilots, flights, and settings. This cannot be undone.')) return;
+  try{ localStorage.removeItem('gl5'); }catch(e){}
+  location.reload();
+}
+
+function confirmClearLog(){
+  if(!confirm('CLEAR FLIGHT LOG?\n\nThis removes all logged flights. Airborne flights are not affected. This cannot be undone.')) return;
+  S.log=[]; S.takeoffs=0; save();
+  closeSetup();
+  renderAll();
+  showToast('FLIGHT LOG CLEARED',1600);
+}
+
+/* ======= DELETE LOG ENTRY ======= */
+function deleteLogEntry(id){
+  const e=S.log.find(x=>x.id===id); if(!e) return;
+  // If aerotow pair, ask about partner
+  if(e.pair){
+    const partner=S.log.find(x=>x.pair===e.pair&&x.id!==id);
+    const partnerInfo=partner?` + ${partner.reg}`:'';
+    if(!confirm(`DELETE FLIGHT #${e.num} — ${e.reg}${partnerInfo}?\n\nThis cannot be undone.`)) return;
+    if(partner && confirm(`Also delete aerotow partner ${partner.reg}?`)){
+      S.log=S.log.filter(x=>x.id!==id&&x.id!==partner.id);
+    } else {
+      S.log=S.log.filter(x=>x.id!==id);
+      if(partner) partner.pair=null; // unlink surviving entry
+    }
+  } else {
+    if(!confirm(`DELETE FLIGHT #${e.num} — ${e.reg}?\n\nThis cannot be undone.`)) return;
+    S.log=S.log.filter(x=>x.id!==id);
+  }
+  save(); renderLog(); updateFilterSel();
+}
 
 /* ======= CLOCK ======= */
 function tickClock(){
@@ -667,7 +787,6 @@ function selectPlaneById(id){
   else if(slot==='glider'){ S.comp.glider.plane=pl; S.comp.glider.pilots=[null,null]; S.focus={slot:'glider',sub:'p0'}; }
   else{ S.comp.single.plane=pl; S.comp.single.pilots=[null,null]; S.focus={slot:'single',sub:'p0'}; }
   S.bmode='pilots'; renderComp(); renderBottom();
-  setTimeout(()=>{ const el=document.getElementById('new-pilot-in'); if(el)el.focus(); },100);
 }
 
 /* ======= AIRBORNE / COMPOSER HELPERS ======= */
@@ -811,11 +930,20 @@ function selectPilot(name){
 
 function skipP2(){ advReady(); renderComp(); renderBottom(); }
 
-/* focus the new-pilot input (called by the + card in pilot grid) */
-function focusNewPilot(){
+/* activate new-pilot input — removes readonly so keyboard appears only on explicit tap */
+function activateNewPilot(){
   const el=document.getElementById('new-pilot-in');
-  if(el){ el.focus(); el.scrollIntoView({block:'nearest'}); }
+  if(!el) return;
+  el.removeAttribute('readonly');
+  el.removeAttribute('inputmode');
+  el.classList.remove('locked');
+  el.placeholder='Type a new pilot name...';
+  el.focus();
+  el.scrollIntoView({block:'nearest'});
 }
+
+/* legacy alias kept for any other callers */
+function focusNewPilot(){ activateNewPilot(); }
 
 /* open quick-add plane form inline in the bottom panel */
 function openQuickAddPlane(){
@@ -1384,7 +1512,7 @@ function renderBPilots(){
     </div>`;
   }).join('');
 
-  const addCard=`<div class="pilot-card add-new" onclick="focusNewPilot()">
+  const addCard=`<div class="pilot-card add-new" onclick="activateNewPilot()">
     <div class="add-new-plus">+</div>
     <div class="add-new-lbl">NEW</div>
   </div>`;
@@ -1400,9 +1528,11 @@ function renderBPilots(){
     </div>
     ${scrollHint}${soloBtn}
     <div class="pilot-new-row">
-      <input type="text" class="pilot-text-in" id="new-pilot-in"
-             placeholder="Tap to type a new name..."
-             autocomplete="off" autocorrect="off" autocapitalize="words">
+      <input type="text" class="pilot-text-in locked" id="new-pilot-in"
+             placeholder="Tap + to add new pilot"
+             autocomplete="off" autocorrect="off" autocapitalize="words"
+             readonly inputmode="none"
+             onclick="activateNewPilot()">
       <button class="pilot-add-btn" onclick="confirmNewPilot()">ADD</button>
     </div>
   </div>`;
@@ -1636,6 +1766,7 @@ function renderLog(){
       <td class="log-edit-td mono" onclick="editLogTime('${e.id}','ldg')" title="Tap to edit">${dLdg}</td>
       <td class="mono" style="font-weight:700">${e.dur||'—'}</td>
       <td class="note-td" onclick="editNote('${e.id}')">${e.note||'+'}</td>
+      <td class="log-del-td" onclick="deleteLogEntry('${e.id}')" title="Delete flight">&#10005;</td>
     </tr>`;
   }).join('');
 }
@@ -1823,6 +1954,7 @@ function exportPDF(){
   }).join('');
 
   const filterNote=S.logFilter?`<div style="font-size:9px;color:#666;margin-bottom:5px;">Filter active: ${S.logFilter.replace('::',' = ')}</div>`:'';
+  const airfieldLine=S.airport?`<div class="dt">Airfield: <b>${S.airport}</b></div>`:'';
 
   const html=`<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8">
@@ -1852,6 +1984,7 @@ tbody tr:last-child td{border-bottom:1.5px solid #aaa;}
 <div class="hd">
   <h1>Šmírka Mobile &mdash; Flight Record</h1>
   <div class="dt">Date: <b>${fullDate()}</b></div>
+  ${airfieldLine}
   ${filterNote}
 </div>
 <table>
